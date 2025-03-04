@@ -1,4 +1,4 @@
-# microservices
+# Microservices
 
 Services Include:
 
@@ -7,5 +7,10 @@ Services Include:
 3. Sync Service (Quarkus): sync-ms
 
 
-Deployment:
+# Deployment:
 AWS (TBD)
+
+
+# Comparison between Openliberty, SpringBoot and Quarkus
+
+
