@@ -1,7 +1,8 @@
 package ms.notification.jwt;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+ 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -18,8 +19,10 @@ import app.core.jwt.JwtVertxUtils;
 import ms.notification.service.impl.JwtUserDetailsService;
 
 public class JwtAuthenticationProvider implements AuthenticationProvider {
+	
+	private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationProvider.class);
 
-	private static final Logger LOGGER = LogManager.getLogger(JwtAuthenticationProvider.class);
+ 
 
 	@Autowired
 	JwtVerifyUtils jwtVerifyUtils;
@@ -48,7 +51,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
 			}
 		} catch (UsernameNotFoundException e) {
-			LOGGER.info(e.getMessage(),e);
+			log.info(e.getMessage(),e);
 		}  
 
 		throw new AuthenticationServiceException("Login Failed.");

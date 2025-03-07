@@ -12,6 +12,16 @@ public class NotificationConfig {
 	private String username;
 
 	private String defaultNotiType;
+	
+	
+	public NotificationConfig() {
+		
+	}
+	
+	public NotificationConfig(String username, String defaultNotiType) {
+		this.username = username;
+		this.defaultNotiType = defaultNotiType;
+	}
 
 	public String getUsername() {
 		return username;

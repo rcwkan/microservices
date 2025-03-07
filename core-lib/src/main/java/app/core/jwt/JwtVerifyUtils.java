@@ -2,7 +2,6 @@ package app.core.jwt;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -10,8 +9,8 @@ import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -19,11 +18,11 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SecurityException;
-import io.jsonwebtoken.security.SignatureException;
 
 public class JwtVerifyUtils {
 
-	Logger LOGGER = LogManager.getLogger(JwtVerifyUtils.class);
+	private static final Logger log = LoggerFactory.getLogger(JwtVerifyUtils.class);
+ 
 
 	private static PublicKey publicKey;
 
@@ -38,7 +37,7 @@ public class JwtVerifyUtils {
 			Jwts.parser().verifyWith(this.getPublicKey()).build().parse(jwt);
 			return true;
 		} catch (ExpiredJwtException   | MalformedJwtException |SecurityException |  IllegalArgumentException e) {
-			LOGGER.info(e.getMessage(), e);
+			log.info(e.getMessage(), e);
 		}
 		return false;
 
@@ -78,7 +77,7 @@ public class JwtVerifyUtils {
 			return publicKey;
 
 		} catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException e) {
-			LOGGER.info(e.getMessage(), e);
+			log.info(e.getMessage(), e);
 		}
 
 		return null;

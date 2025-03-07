@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import app.core.jwt.JwtUtils;
 import app.core.jwt.JwtVertxUtils;
@@ -16,10 +18,14 @@ import jakarta.transaction.Transactional;
 import ms.user.dao.UserDao;
 import ms.user.models.User;
 import ms.user.models.UserCred;
+import ms.user.resources.UserResource;
 import ms.user.service.AuthService;
 
 @ApplicationScoped
 public class AuthServiceImpl implements AuthService {
+	
+	private static final Logger log = LoggerFactory.getLogger(AuthServiceImpl.class);
+	 
 
 	@Inject
 	private UserDao userDao;
@@ -47,6 +53,8 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public String authenticate(String username, String pwd) throws Exception {
+		
+		log.info("authenticate: {}",username);
 
 		List<User> users = userDao.findUser(username);
 		;

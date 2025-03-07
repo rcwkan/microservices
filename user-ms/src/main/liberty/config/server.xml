@@ -19,13 +19,16 @@
 
 	<variable name="http.port" defaultValue="8080" />
 	<variable name="https.port" defaultValue="8443" />
-	
- 
-	<keyStore id="defaultKeyStore" password="password" /> 
- 
+
+
+	<keyStore id="defaultKeyStore" password="password" />
+
 	<httpEndpoint host="*" httpPort="${http.port}" httpsPort="${https.port}" id="defaultHttpEndpoint" />
 
 	<webApplication location="user-ms.war" contextRoot="/" />
+ 
+
+	<logging consoleLogLevel="INFO" messageSource="message,trace,accessLog,ffdc,audit" />
 
 	<library id="jdbcLib">
 		<fileset dir="jdbc" includes="*.jar" />

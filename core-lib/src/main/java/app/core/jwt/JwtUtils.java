@@ -1,61 +1,42 @@
 package app.core.jwt;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.function.Function;
 
-import javax.crypto.SecretKey;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.AeadAlgorithm;
-import io.jsonwebtoken.security.KeyAlgorithm;
-import io.jsonwebtoken.security.Keys;
-import io.vertx.core.json.JsonObject;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.security.Key;
-import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyStore;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
+ 
 
 public class JwtUtils {
 
-	Logger LOGGER = LogManager.getLogger(JwtUtils.class);
-
+	private static final Logger log = LoggerFactory.getLogger(JwtUtils.class);
+ 
 	private String keyAlgo = "PKCS12";
 
 	private static String keyPass = "password";
 
 	private static String keyAlias = "default";
-
-	private String publicKeyPath;
+ 
 
 	private String privateKeyPath;
 
 	private static String privateKeyClasspath = "key.p12";
 
-	private Long expiration = 300l;
+	private Long expiration = 3000l;
 
 	private Long skewSeconds;
 
@@ -112,7 +93,7 @@ public class JwtUtils {
 	}
 	
 	public String generateToken(String username) {
-		return generateToken(username, Arrays.asList("user"), Arrays.asList("user"));
+		return generateToken(username, null, Arrays.asList("user"));
 	}
 
 	public String generateToken(String username, List<String> groups, List<String> roles) {
@@ -179,7 +160,7 @@ public class JwtUtils {
 			JwtUtils.publicKey = cert.getPublicKey();
 
 		} catch (Exception ex) {
-			LOGGER.error(ex.getMessage(), ex);
+			log.error(ex.getMessage(), ex);
 		}
 	}
 

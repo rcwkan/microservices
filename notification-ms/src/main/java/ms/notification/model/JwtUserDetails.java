@@ -73,4 +73,13 @@ public class JwtUserDetails implements UserDetails {
 		this.username = username;
 	}
 
+	@Override
+	public String toString() {
+		return "JwtUserDetails [jwt=" + jwt + ", username=" + username + ", groups=" + groups + ", roles=" + roles
+				+ ", authoritie=" + authoritie + "]";
+	}
+	
+	
+	
+
 }

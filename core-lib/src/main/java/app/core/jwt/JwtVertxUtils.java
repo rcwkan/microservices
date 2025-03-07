@@ -22,25 +22,25 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.auth.JWTOptions;
 import io.vertx.ext.auth.PubSecKeyOptions;
 import io.vertx.ext.auth.User;
 import io.vertx.ext.auth.authentication.Credentials;
 import io.vertx.ext.auth.authentication.TokenCredentials;
-import io.vertx.ext.auth.JWTOptions;
 import io.vertx.ext.auth.jwt.JWTAuth;
 import io.vertx.ext.auth.jwt.JWTAuthOptions;
 
-import io.vertx.core.json.JsonArray;
-
 public class JwtVertxUtils {
 
-	Logger LOGGER = LogManager.getLogger(JwtVertxUtils.class);
+	private static final Logger log = LoggerFactory.getLogger(JwtVertxUtils.class);
+ 
 
 	private static JwtVertxUtils instance;
 	private static String keystorePath = "key.p12";
@@ -98,13 +98,13 @@ public class JwtVertxUtils {
 
 		Credentials creds = new TokenCredentials(jwt);
 
-		LOGGER.info("isVaildToken 1 :{}", System.currentTimeMillis());
+		log.info("isVaildToken 1 :{}", System.currentTimeMillis());
 		Future<User> fUSer = provider.authenticate(creds).onSuccess(user -> {
 
-			LOGGER.info("isVaildToken 2 :{}", System.currentTimeMillis());
+			log.info("isVaildToken 2 :{}", System.currentTimeMillis());
 //				    System.out.println(" onSuccess User: " + user.principal()))
 		}).onFailure(err -> {
-			LOGGER.info("isVaildToken 3 :{} {}", System.currentTimeMillis(), err);
+			log.info("isVaildToken 3 :{} {}", System.currentTimeMillis(), err);
 //					System.out.println("onFailure err: " + err);
 		});
 
@@ -112,7 +112,7 @@ public class JwtVertxUtils {
 			Thread.sleep(50);
 		}
 
-		LOGGER.info("isVaildToken 4 :{}, {}", System.currentTimeMillis(), fUSer.succeeded());
+		log.info("isVaildToken 4 :{}, {}", System.currentTimeMillis(), fUSer.succeeded());
 		return fUSer.succeeded();
 
 	}

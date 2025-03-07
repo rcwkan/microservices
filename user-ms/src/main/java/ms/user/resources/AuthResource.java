@@ -1,9 +1,8 @@
 package ms.user.resources;
 
-      
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+    
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import app.core.util.CoreUtils;
 import jakarta.enterprise.context.RequestScoped;
@@ -16,6 +15,7 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+ 
 import ms.user.models.User;
 import ms.user.service.AuthService;
 import ms.user.service.UserService;
@@ -24,8 +24,11 @@ import ms.user.service.UserService;
 @RequestScoped
 @Path("auth")
 public class AuthResource {
-
-	private static final Logger log = LogManager.getLogger(AuthResource.class.getName());
+	
+	private static final Logger log = LoggerFactory.getLogger(AuthResource.class);
+	 
+	
+ 
 
 	@Inject
 	private AuthService authService;

@@ -4,10 +4,11 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import ms.notification.controller.NotificationController;
 import ms.notification.service.impl.JwtUserDetailsService;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.lang.NonNull;
@@ -21,15 +22,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
-import app.core.jwt.JwtVertxUtils;
+ 
 
 import java.io.IOException;
 
 //https://medium.com/@tericcabrel/implement-jwt-authentication-in-a-spring-boot-3-application-5839e4fd8fac
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-
-	private static final Logger LOGGER = LogManager.getLogger(JwtAuthenticationFilter.class);
+ 
+	private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
 	@Autowired
 	private HandlerExceptionResolver handlerExceptionResolver;

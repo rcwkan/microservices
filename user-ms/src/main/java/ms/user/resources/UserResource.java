@@ -30,6 +30,10 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import ms.user.models.User;
 import ms.user.service.UserService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import app.core.util.CoreUtils;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
@@ -38,6 +42,9 @@ import jakarta.inject.Inject;
 @RequestScoped
 @Path("users")
 public class UserResource {
+	
+	private static final Logger log = LoggerFactory.getLogger(UserResource.class);
+	 
 
 	@Inject
 	private UserService userService;
