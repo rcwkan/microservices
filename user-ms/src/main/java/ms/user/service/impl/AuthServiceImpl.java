@@ -52,6 +52,7 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	@Override
+	@Transactional
 	public String authenticate(String username, String pwd) throws Exception {
 		
 		log.info("authenticate: {}",username);

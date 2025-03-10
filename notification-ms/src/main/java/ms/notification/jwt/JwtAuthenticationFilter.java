@@ -4,7 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import ms.notification.controller.NotificationController;
+import ms.notification.controller.MessageController;
 import ms.notification.service.impl.JwtUserDetailsService;
 
 import org.slf4j.Logger;

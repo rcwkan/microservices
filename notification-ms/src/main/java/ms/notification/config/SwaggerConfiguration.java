@@ -17,10 +17,10 @@ public class SwaggerConfiguration {
 	public OpenAPI customOpenAPI() {
 		
 		return new OpenAPI()
-				.info(new Info().title("JavaInUse Authentication Service"))				
-				.addSecurityItem(new SecurityRequirement().addList("JavaInUseSecurityScheme"))
-				.components(new Components().addSecuritySchemes("JavaInUseSecurityScheme", new SecurityScheme()
-						.name("JavaInUseSecurityScheme").type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")));
+				.info(new Info().title("Notification Service").version("1.0"))				
+				.addSecurityItem(new SecurityRequirement().addList("MsSecurityScheme"))
+				.components(new Components().addSecuritySchemes("MsSecurityScheme", new SecurityScheme()
+						.name("MsSecurityScheme").type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")));
 		
 	}
 }

@@ -2,6 +2,8 @@ package ms.notification.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,6 +12,7 @@ import jakarta.persistence.Id;
 @Entity
 public class Message {
 
+	@JsonIgnore
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -21,12 +24,20 @@ public class Message {
 	private String content;
 
 	private String type;
-	
+
+	@JsonIgnore
 	private String status;
 
+	@JsonIgnore
 	private Date createDate;
 
+	@JsonIgnore
 	private Date sentDate;
+
+	public Message(String msgTo, String content) {
+		 this.msgTo = msgTo;
+		 this.content = content;
+	}
 
 	public Long getId() {
 		return id;
