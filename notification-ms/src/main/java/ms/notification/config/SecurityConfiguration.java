@@ -1,8 +1,7 @@
 package ms.notification.config;
 
 import java.util.List;
- 
-import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -15,7 +14,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import app.core.jwt.JwtVertxUtils;
 import ms.notification.jwt.JwtAuthenticationFilter;
 
 @Configuration

@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ms.notification.model.Message;
 import ms.notification.service.MessageService;
-import ms.notification.service.impl.MessageServiceImpl;
 
 @Service
 public class MessageJob {

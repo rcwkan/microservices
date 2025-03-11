@@ -14,8 +14,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import app.core.jwt.JwtUtils;
 import app.core.jwt.JwtVerifyUtils;
-import app.core.jwt.JwtVertxUtils;
-
 import ms.notification.service.impl.JwtUserDetailsService;
 
 public class JwtAuthenticationProvider implements AuthenticationProvider {

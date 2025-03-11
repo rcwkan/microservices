@@ -2,8 +2,7 @@ package ms.notification.service.impl;
 
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,17 +11,14 @@ import org.springframework.stereotype.Service;
 
 import app.core.jwt.JwtUtils;
 import app.core.jwt.JwtVerifyUtils;
-import app.core.jwt.JwtVertxUtils;
-import app.core.util.CoreUtils;
 import io.jsonwebtoken.Claims;
-import io.vertx.core.json.JsonObject;
 import ms.notification.model.JwtUserDetails;
 
 @Service("jwtUserDetailsService")
 public class JwtUserDetailsService implements UserDetailsService {
+ 
+	private static final org.slf4j.Logger log = LoggerFactory.getLogger(JwtUserDetailsService.class);
 
-	private static final Logger LOGGER = LogManager.getLogger(JwtUserDetailsService.class);
-	
 
 	@Autowired
 	JwtVerifyUtils jwtVerifyUtils;
@@ -33,14 +29,14 @@ public class JwtUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String jwt) throws UsernameNotFoundException {
 
-		LOGGER.info("loadUserByUsername jwt : {}", jwt);
+		log.info("loadUserByUsername jwt : {}", jwt);
 
 		try {
 
 			Claims claims = jwtVerifyUtils.getClaims(jwt);
 			JwtUserDetails user = new JwtUserDetails();
 
-			LOGGER.info("loadUserByUsername pincipal : {}", claims.toString());
+			log.info("loadUserByUsername pincipal : {}", claims.toString());
 
 			user.setJwt(jwt);
 			user.setUsername(claims.getSubject());
@@ -55,7 +51,7 @@ public class JwtUserDetailsService implements UserDetailsService {
   
 			return user;
 		} catch (Exception e) {
-			LOGGER.warn(e.getMessage(),e);
+			log.warn(e.getMessage(),e);
 		}
 
 		throw new UsernameNotFoundException(jwt);

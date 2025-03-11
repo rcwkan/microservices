@@ -8,13 +8,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.netty.util.internal.StringUtil;
 import ms.notification.adaptor.EmailAdaptor;
 import ms.notification.model.Message;
 import ms.notification.repository.MessageRepository;
@@ -50,12 +47,13 @@ public class MessageServiceImpl implements MessageService {
 		if (StringUtils.isEmpty(message)) {
 			throw new Exception("Missing message.");
 		}
-		
-		
-		Message msg = new Message(username, message);
-		msg.setStatus(MSG_STATUS_PENDING);
-		msg.setCreateDate(new Date());
+	 
+	
+//		Message msg = new Message(username, message); 
+//		msg.setStatus(MSG_STATUS_PENDING);
+//		msg.setCreateDate(new Date());
 
+		Message msg =  	Message.builder().msgTo(username).content(message).status(MSG_STATUS_PENDING).createDate(new Date()).build();
 		messageRepository.save(msg);
 
 		return send(msg);
@@ -85,27 +83,27 @@ public class MessageServiceImpl implements MessageService {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public boolean send(Message message) {
-
+	public boolean send(Message m) {
+	
 		boolean success;
 		try {
-			success = emailAdaptor.send(null, null, null, null, null);
+			success = emailAdaptor.send(m.getMsgFrom(), m.getMsgTo(), m.getSubject(), m.getContent(), null);
 		} catch (IOException e) {
 			log.warn(e.getMessage(), e);
 			success = false;
 		}
 
 		if (!success) {
-			if (MSG_STATUS_PENDING.equals(message.getStatus())) {
-				message.setStatus(MSG_STATUS_RETRY);
-			} else if (MSG_STATUS_RETRY.equals(message.getStatus())) {
-				message.setStatus(MSG_STATUS_FAILED);
+			if (MSG_STATUS_PENDING.equals(m.getStatus())) {
+				m.setStatus(MSG_STATUS_RETRY);
+			} else if (MSG_STATUS_RETRY.equals(m.getStatus())) {
+				m.setStatus(MSG_STATUS_FAILED);
 			}
 
 		} else {
-			message.setStatus(MSG_STATUS_SENT);
+			m.setStatus(MSG_STATUS_SENT);
 		}
-		messageRepository.save(message);
+		messageRepository.save(m);
 
 		return success;
 	}

@@ -4,21 +4,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import ms.notification.jwt.JwtAuthenticationFilter;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import ms.notification.model.Message;
 import ms.notification.service.MessageService;
 
@@ -35,32 +31,50 @@ public class MessageController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Message is pending to send out.", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = String.class)) }),
-			@ApiResponse(responseCode = "400", description = "Invalid input provided") }) 
+			@ApiResponse(responseCode = "400", description = "Invalid input provided") })
 	@PostMapping("/send")
 	public ResponseEntity<String> sendMesssage(@RequestBody Message message) {
 
-		messageService.sendMessage(message);
+		boolean success;
+		try {
+			success = messageService.sendMessage(message);
 
-		return ResponseEntity.ok("success");
+		} catch (Exception e) {
+			log.warn(e.getMessage(), e);
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+
+		if (success) {
+			return ResponseEntity.ok("success");
+		}
+		return ResponseEntity.badRequest().body("fail");
+
 	}
-	
 
 	@Operation(summary = "Send Notification")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Message is pending to send out.", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = String.class)) }),
-			@ApiResponse(responseCode = "400", description = "Invalid input provided") }) 
+			@ApiResponse(responseCode = "400", description = "Invalid input provided") })
 	@PostMapping("/notify")
-	public ResponseEntity<String> notify(String username, String content) {
+	public ResponseEntity<String> notify(@RequestParam String username, @RequestParam String content) {
 
-		messageService.notify(username, content);
+		boolean success;
+		try {
+			success = messageService.notify(username, content);
+		 
+		} catch (Exception e) {
+			log.warn(e.getMessage(), e);
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+		
+		if (success) {
+			return ResponseEntity.ok("success");
+		}
+		return ResponseEntity.badRequest().body("fail");
 
-		return ResponseEntity.ok("success");
 	}
-	
-	 
-	
- 
+
 //	
 //	@MessageMapping("/push")  
 //	@SendTo("/message/notifications")  
