@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import app.core.jwt.JwtBuilder;
+import app.core.jwt.JwtVertxUtils;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -16,10 +18,14 @@ import jakarta.transaction.Transactional;
 import ms.user.dao.UserDao;
 import ms.user.models.User;
 import ms.user.models.UserCred;
+import ms.user.resources.UserResource;
 import ms.user.service.UserService;
 
 @ApplicationScoped
 public class UserServiceImpl implements UserService {
+	
+	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
+	 
 
 	@Inject
 	private UserDao userDao;

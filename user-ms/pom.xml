@@ -19,6 +19,7 @@
 		<liberty.var.http.port>8080</liberty.var.http.port>
 		<liberty.var.https.port>8443</liberty.var.https.port>
 		<jwt.issuer>http://openliberty.io</jwt.issuer>
+		<jjwt.version>0.12.6</jjwt.version>
 	</properties>
 
 	<dependencies>
@@ -28,7 +29,7 @@
 			<artifactId>core-lib</artifactId>
 			<version>1.0.0</version>
 		</dependency>
-	 
+
 		<dependency>
 			<groupId>jakarta.platform</groupId>
 			<artifactId>jakarta.jakartaee-api</artifactId>
@@ -36,19 +37,39 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.microprofile</groupId> 
-			<artifactId>microprofile</artifactId> 
+			<groupId>org.eclipse.microprofile</groupId>
+			<artifactId>microprofile</artifactId>
 			<version>7.0</version>
 			<type>pom</type>
 			<scope>provided</scope>
 		</dependency>
- 
+
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>${jjwt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>${jjwt.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>${jjwt.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+
+
 		<!-- Java utility classes -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.17.0</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
@@ -59,6 +80,21 @@
 			<artifactId>log4j-core</artifactId>
 			<version>2.24.3</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j2-impl</artifactId>
+			<version>2.24.3</version>
+		 
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>2.0.16</version>
+		</dependency>
+
 		<!-- For tests-->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
