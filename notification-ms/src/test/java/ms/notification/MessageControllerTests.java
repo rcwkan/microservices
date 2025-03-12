@@ -1,5 +1,6 @@
 package ms.notification;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -34,9 +35,9 @@ public class MessageControllerTests {
 	@Test
 	void sendTest() throws Exception {
 
-		Message message = Message.builder().msgTo("tester01").content("Message").build();
+		Message message = Message.builder().msgTo("tester01").content("Message").status("S").build();
 
-		Mockito.when(messageService.sendMessage(message)).thenReturn(true);
+		Mockito.when(messageService.sendMessage(any(Message.class))).thenReturn(message);
 
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(message);
@@ -83,11 +84,31 @@ public class MessageControllerTests {
 				.andExpect(status().isBadRequest())
 				.andExpect(content().string("Missing content.")); 
 	}
+	
+	@Test
+	void sendTest_internal_error() throws Exception {
+
+		Message message = Message.builder().msgTo("tester01").content("Message").status("P").build();
+
+		Mockito.when(messageService.sendMessage(any(Message.class))).thenReturn(message);
+
+		ObjectMapper mapper = new ObjectMapper();
+		String json = mapper.writeValueAsString(message);
+
+		mockMvc.perform(post("/message/send")
+				.with(SecurityMockMvcRequestPostProcessors.jwt().authorities(new SimpleGrantedAuthority("USER")))
+				.contentType(MediaType.APPLICATION_JSON).content(json)).andDo(print())
+				.andExpect(status().isInternalServerError())
+				.andExpect(content().string("fail")); 
+	}
 
 	@Test
 	void notifyTest() throws Exception {
+		
+		Message message = Message.builder().msgTo("tester01").content("Message").status("S").build();
 
-		Mockito.when(messageService.notify("tester01", "Message")).thenReturn(true);
+
+		Mockito.when(messageService.notify("tester01", "Message")).thenReturn(message);
 
 		mockMvc.perform(post("/message/notify")
 				.with(SecurityMockMvcRequestPostProcessors.jwt().authorities(new SimpleGrantedAuthority("USER")))

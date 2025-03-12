@@ -31,14 +31,19 @@ public class MessageController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Message is pending to send out.", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = String.class)) }),
-			@ApiResponse(responseCode = "400", description = "Invalid input provided") })
+			@ApiResponse(responseCode = "400", description = "Invalid input provided"),
+			@ApiResponse(responseCode = "500", description = "System Error.") 
+			})
+	
 	@PostMapping("/send")
 	public ResponseEntity<String> sendMesssage(@RequestBody Message message) {
 
 		boolean success;
 		try {
-			success = messageService.sendMessage(message);
-
+			Message sMessage = messageService.sendMessage(message);
+			
+			success = "S".equals(sMessage.getStatus());
+			
 		} catch (Exception e) {
 			log.warn(e.getMessage(), e);
 			return ResponseEntity.badRequest().body(e.getMessage());
@@ -47,7 +52,7 @@ public class MessageController {
 		if (success) {
 			return ResponseEntity.ok("success");
 		}
-		return ResponseEntity.badRequest().body("fail");
+		return ResponseEntity.internalServerError().body("fail");
 
 	}
 
@@ -61,7 +66,9 @@ public class MessageController {
 
 		boolean success;
 		try {
-			success = messageService.notify(username, content);
+			Message sMessage =  messageService.notify(username, content);
+			
+			success = "S".equals(sMessage.getStatus());
 		 
 		} catch (Exception e) {
 			log.warn(e.getMessage(), e);

@@ -6,11 +6,11 @@ import ms.notification.model.Message;
 
 public interface MessageService {
 
-	boolean sendMessage(Message m) throws Exception;
+	Message sendMessage(Message m) throws Exception;
 	
-	boolean notify(String username, String message) throws Exception;
+	Message notify(String username, String message) throws Exception;
 
-	boolean send(Message m);
+	Message send(Message m);
 
 	List<Message> findRetryMessages();
 	

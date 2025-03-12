@@ -26,9 +26,9 @@ public class MessageServiceImpl implements MessageService {
 
 	private static final String MSG_STATUS_RETRY = "R";
 
-	private static final String MSG_STATUS_SENT = "S";
+	public static final String MSG_STATUS_SENT = "S";
 
-	private static final String MSG_STATUS_PENDING = "P";
+	public static final String MSG_STATUS_PENDING = "P";
 
 	@Autowired
 	EmailAdaptor emailAdaptor;
@@ -38,7 +38,7 @@ public class MessageServiceImpl implements MessageService {
 
 	@Override
 	@Transactional
-	public boolean notify(String username, String message) throws Exception {
+	public Message notify(String username, String message) throws Exception {
 
 		// validation
 		if (StringUtils.isEmpty(username)) {
@@ -62,7 +62,7 @@ public class MessageServiceImpl implements MessageService {
 
 	@Override
 	@Transactional
-	public boolean sendMessage(Message msg) throws Exception {
+	public Message sendMessage(Message msg) throws Exception {
 
 		// validation
 		if (StringUtils.isEmpty(msg.getMsgTo())) {
@@ -83,7 +83,7 @@ public class MessageServiceImpl implements MessageService {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public boolean send(Message m) {
+	public Message send(Message m) {
 	
 		boolean success;
 		try {
@@ -105,7 +105,7 @@ public class MessageServiceImpl implements MessageService {
 		}
 		messageRepository.save(m);
 
-		return success;
+		return m;
 	}
 
 	@Override
