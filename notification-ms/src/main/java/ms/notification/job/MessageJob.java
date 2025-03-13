@@ -36,7 +36,11 @@ public class MessageJob {
 		List<Message> messages = messageService.findRetryMessages();
 
 		for (Message m : messages) {
-			messageService.send(m);
+			try {
+				messageService.sendEmail(m);
+			} catch (Exception e) {
+				log.info("scheduleSendRetryMessages");
+			}
 		}
 	}
 

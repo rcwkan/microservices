@@ -60,7 +60,7 @@ public class AuthServiceImpl implements AuthService {
 		List<User> users = userDao.findUser(username);
 		;
 		if (users.isEmpty() || users.size() != 1) {
-			throw new Exception("User not found.");
+			throw new Exception("User not found. username:" + username);
 		}
 
 		List<UserCred> creds = users.get(0).getCreds().stream().filter(c -> c.isActive()).collect(Collectors.toList());

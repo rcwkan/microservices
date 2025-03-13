@@ -3,16 +3,22 @@ package ms.notification.config;
  
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.authentication.AuthenticationProvider;
 
 import app.core.jwt.JwtUtils;
 import app.core.jwt.JwtVerifyUtils;
 import ms.notification.jwt.JwtAuthenticationProvider;
+import ms.user.client.api.DefaultApi;
+ 
 
 @Configuration
+@ComponentScan(basePackages = "ms.user.client.api")
 public class ApplicationConfiguration {
 
 	private static final Logger log = LoggerFactory.getLogger(ApplicationConfiguration.class);
@@ -55,5 +61,12 @@ public class ApplicationConfiguration {
 
 		return authProvider;
 	}
-
+	
+	@Bean
+//	@Scope("request")
+	DefaultApi defaultApi() {
+		return new DefaultApi();
+	}
+	
+ 
 }

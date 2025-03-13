@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+
 import ms.notification.adaptor.EmailAdaptor;
 import ms.notification.model.Message;
 import ms.notification.repository.MessageRepository;
@@ -47,16 +49,16 @@ public class MessageServiceImpl implements MessageService {
 		if (StringUtils.isEmpty(message)) {
 			throw new Exception("Missing message.");
 		}
-	 
-	
+
 //		Message msg = new Message(username, message); 
 //		msg.setStatus(MSG_STATUS_PENDING);
 //		msg.setCreateDate(new Date());
 
-		Message msg =  	Message.builder().msgTo(username).content(message).status(MSG_STATUS_PENDING).createDate(new Date()).build();
+		Message msg = Message.builder().msgTo(username).content(message).status(MSG_STATUS_PENDING)
+				.createDate(new Date()).build();
 		messageRepository.save(msg);
 
-		return send(msg);
+		return sendEmail(msg);
 
 	}
 
@@ -71,27 +73,27 @@ public class MessageServiceImpl implements MessageService {
 		if (StringUtils.isEmpty(msg.getContent())) {
 			throw new Exception("Missing content.");
 		}
-		
+
 		msg.setStatus(MSG_STATUS_PENDING);
 		msg.setCreateDate(new Date());
 
 		messageRepository.save(msg);
 
-		return send(msg);
+		return sendEmail(msg);
 
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public Message send(Message m) {
-	
-		boolean success;
-		try {
-			success = emailAdaptor.send(m.getMsgFrom(), m.getMsgTo(), m.getSubject(), m.getContent(), null);
-		} catch (IOException e) {
-			log.warn(e.getMessage(), e);
-			success = false;
-		}
+	@Transactional(propagation = Propagation.REQUIRES_NEW) 
+	public Message sendEmail(Message m) throws Exception {
+
+ 
+//		try {
+		boolean	success = emailAdaptor.send(m.getMsgFrom(), m.getMsgTo(), m.getSubject(), m.getContent(), null);
+//		} catch (IOException e) {
+//			log.warn(e.getMessage(), e);
+//			success = false;
+//		}
 
 		if (!success) {
 			if (MSG_STATUS_PENDING.equals(m.getStatus())) {
@@ -103,10 +105,14 @@ public class MessageServiceImpl implements MessageService {
 		} else {
 			m.setStatus(MSG_STATUS_SENT);
 		}
+		
 		messageRepository.save(m);
 
 		return m;
 	}
+
+	
+ 
 
 	@Override
 	@Transactional(readOnly = true)

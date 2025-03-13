@@ -18,48 +18,51 @@ import com.amazonaws.services.simpleemail.model.Destination;
 import com.amazonaws.services.simpleemail.model.Message;
 import com.amazonaws.services.simpleemail.model.SendEmailRequest;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.annotation.PostConstruct;
 import ms.notification.adaptor.EmailAdaptor;
- 
+
 @Service
 public class AmazonSES implements EmailAdaptor {
-	
-	
+
 	private static final Logger log = LoggerFactory.getLogger(AmazonSES.class);
- 
+
 	AWSCredentialsProvider credentialsProvider;
-	
+
 	@Value("${ms.core.aws.secret.key}")
 	String awsSecretKey;
-	
+
 	@Value("${ms.core.aws.access.key.id}")
 	String awsAccessKeyId;
-	
-	
+
 	@PostConstruct
 	public void init() {
-		
-		 credentialsProvider = new AWSCredentialsProvider() {
-		    @Override
-		    public void refresh() {}
-		        @Override
-		        public AWSCredentials getCredentials() {
-		        return new AWSCredentials() {
-		            @Override
-		            public String getAWSSecretKey() {
-		                return awsSecretKey;
-		            }
-		            @Override
-		            public String getAWSAccessKeyId() {
-		                return awsAccessKeyId;
-		            }
-		        };
-		    }
+
+		credentialsProvider = new AWSCredentialsProvider() {
+			@Override
+			public void refresh() {
+			}
+
+			@Override
+			public AWSCredentials getCredentials() {
+				return new AWSCredentials() {
+					@Override
+					public String getAWSSecretKey() {
+						return awsSecretKey;
+					}
+
+					@Override
+					public String getAWSAccessKeyId() {
+						return awsAccessKeyId;
+					}
+				};
+			}
 		};
 	}
 
+	@CircuitBreaker(name = "externalEmailService", fallbackMethod = "sendFallback")
 	public boolean send(String from, String to, String subject, String htmlContent, String textContent)
-			throws IOException {
+			throws Exception {
 
 		try {
 			AmazonSimpleEmailService client = AmazonSimpleEmailServiceClientBuilder.standard()
@@ -80,9 +83,16 @@ public class AmazonSES implements EmailAdaptor {
 			return true;
 		} catch (Exception ex) {
 			log.warn("The email was not sent. Error message: " + ex.getMessage(), ex);
+			throw new Exception(ex.getMessage());
 		}
+ 
+	}
 
+	public boolean sendFallback(String from, String to, String subject, String htmlContent, String textContent,Exception e) {
+		 
+		log.warn("sendFallback @CircuitBreaker" + e.getMessage());
 		return false;
+
 	}
 
 }

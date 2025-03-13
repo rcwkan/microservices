@@ -10,7 +10,7 @@ public interface MessageService {
 	
 	Message notify(String username, String message) throws Exception;
 
-	Message send(Message m);
+	Message sendEmail(Message m) throws Exception;
 
 	List<Message> findRetryMessages();
 	

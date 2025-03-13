@@ -17,9 +17,6 @@ public class NotificationConfigServiceImpl implements NotificationConfigService 
 
 	private static final Logger log = LoggerFactory.getLogger(NotificationConfigService.class);
 	 
-	
-	
-	
 	private static final String DEFAULT_NOTIFICATION_TYPE = "EMAIL";
 	
 	@Autowired

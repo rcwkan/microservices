@@ -37,7 +37,7 @@ public class MessageServiceTest {
 	}
 
 	@Test
-	public void notifyMessage() throws IOException {
+	public void notifyMessage() throws Exception {
 
 		Message message = Message.builder().msgTo("tester01").content("Message").build();
 
@@ -61,7 +61,7 @@ public class MessageServiceTest {
 	}
 
 	@Test
-	public void sendMessage() throws IOException {
+	public void sendMessage() throws Exception {
 
 		Message message = Message.builder().msgTo("tester01").content("Message").build();
 

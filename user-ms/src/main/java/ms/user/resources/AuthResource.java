@@ -27,9 +27,7 @@ public class AuthResource {
 	
 	private static final Logger log = LoggerFactory.getLogger(AuthResource.class);
 	 
-	
  
-
 	@Inject
 	private AuthService authService;
 	 

@@ -32,7 +32,7 @@
 		<jjwt.version>0.12.6</jjwt.version>
 	</properties>
 	<dependencies>
-	
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -60,7 +60,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-amqp</artifactId>
 		</dependency>
-	 
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
@@ -84,6 +89,13 @@
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>0.2.6</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk</artifactId>
@@ -100,6 +112,8 @@
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
 		</dependency>
+
+
 		<dependency>
 			<groupId>microservices</groupId>
 			<artifactId>core-lib</artifactId>
@@ -184,7 +198,8 @@
 				<executions>
 
 					<execution>
-						<id>user-ms</id>
+						<id>user-ms-client-code</id>
+
 						<goals>
 							<goal>generate</goal>
 						</goals>
@@ -192,15 +207,23 @@
 							<inputSpec>
 								${project.basedir}/src/main/resources/user-ms.yml
 							</inputSpec>
-							<generatorName>spring</generatorName>
+							<!--
+							https://openapi-generator.tech/docs/generators/java -->
+							<generatorName>java</generatorName>
+							<library>restclient</library>
 							<apiPackage>ms.user.client.api</apiPackage>
 							<modelPackage>ms.user.client.model</modelPackage>
-							<supportingFilesToGenerate>
-								ApiUtil.java
-							</supportingFilesToGenerate>
 							<configOptions>
-								 
-								 <useSpringBoot3>true</useSpringBoot3>
+								<oas3>true</oas3>
+								<useSpringBoot3>true</useSpringBoot3>
+								<useSpringController>true</useSpringController>
+								<useSpringfox>false</useSpringfox>
+								<dateLibrary>java8</dateLibrary>
+								<java8>true</java8>
+								<useBeanValidation>false</useBeanValidation>
+								<performBeanValidation>false</performBeanValidation>
+								<serializableModel>true</serializableModel>
+
 							</configOptions>
 						</configuration>
 					</execution>

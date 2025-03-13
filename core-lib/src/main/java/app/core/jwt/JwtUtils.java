@@ -93,7 +93,7 @@ public class JwtUtils {
 	}
 	
 	public String generateToken(String username) {
-		return generateToken(username, null, Arrays.asList("user"));
+		return generateToken(username, Arrays.asList("user"), Arrays.asList("user"));
 	}
 
 	public String generateToken(String username, List<String> groups, List<String> roles) {
@@ -110,6 +110,8 @@ public class JwtUtils {
 		if (skewSeconds != null) {
 			claims.put(Claims.NOT_BEFORE, skewSeconds);
 		}
+		
+		//openliberty use groups as permission/role
 		if (groups != null && !groups.isEmpty())
 			claims.put("groups", groups);
 		if (roles != null && !roles.isEmpty())

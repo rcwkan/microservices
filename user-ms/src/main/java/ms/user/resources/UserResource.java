@@ -28,8 +28,11 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.SecurityContext;
 import ms.user.models.User;
 import ms.user.service.UserService;
+
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,14 +45,34 @@ import jakarta.inject.Inject;
 @RequestScoped
 @Path("users")
 public class UserResource {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(UserResource.class);
-	 
+
+	@Inject
+	private SecurityContext securityContext;
 
 	@Inject
 	private UserService userService;
 
-
+	@GET
+	@Path("me")
+	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({ "admin", "user" })
+	@Transactional
+	public JsonObject getMe() {
+		
+		log.info("getMe: {}" , securityContext.getUserPrincipal().getName());
+		JsonObjectBuilder builder = Json.createObjectBuilder();
+		 
+		List<User> users = userService.findUser(securityContext.getUserPrincipal().getName());
+		if (users != null && users.size() == 1) {
+			
+			User user = users.get(0);
+			builder.add("username", user.getUsername()).add("displayName", user.getDisplayName())
+					.add("createDate", user.getCreateDate().getTime()).add("id", user.getUserId());
+		}
+		return builder.build();
+	}
 
 	/**
 	 * This method updates a new User from the submitted data by the user.
@@ -115,7 +138,7 @@ public class UserResource {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@RolesAllowed({ "admin" , "user" })
+	@RolesAllowed({ "admin", "user" })
 	@Transactional
 	public JsonArray getUsers() {
 		JsonObjectBuilder builder = Json.createObjectBuilder();
