@@ -2,11 +2,12 @@ package ms.sync.resources;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
+import org.jboss.resteasy.reactive.RestPath;
 
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.InternalServerErrorException;
 import jakarta.ws.rs.POST;
@@ -14,44 +15,54 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
+import ms.sync.entity.SyncLog;
+import ms.sync.model.FileResource;
 import ms.sync.service.SyncService;
 
 @Path("/sync")
 @RequestScoped
 public class SyncResource {
-	
-    private static final Logger LOG = Logger.getLogger(SyncResource.class);
+
+	private static final Logger log = Logger.getLogger(SyncResource.class);
 
 	@Inject
 	JsonWebToken jwt;
 
 	@Inject
 	SyncService syncService;
-
-	@GET
-	@Path("permit-all")
-	@PermitAll
-	@Produces(MediaType.TEXT_PLAIN)
-	public String permitAll(@Context SecurityContext ctx) {
-		
-		LOG.info("hello :");
-		return getResponseString(ctx);
-	}
-
+ 
 	@POST
-	@Produces(MediaType.TEXT_PLAIN) 
+	@Produces(MediaType.TEXT_PLAIN)
 	@RolesAllowed({ "user" })
-	public String sync(@Context SecurityContext ctx) {
-		return getResponseString(ctx);
+	public long sync(@Context SecurityContext ctx) {
+		
+		SyncLog syncLog = new SyncLog(ctx.getUserPrincipal().getName());
+		syncService.createSyncLog(syncLog);
+		log.infov("sync: " + ctx.getUserPrincipal().getName() ); 
+		return 0l;
+	}
+ 
+	@POST
+	@Path("/file")
+	@RolesAllowed({ "user" })
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public boolean fileUpload(  FileResource upload) {
+	    log.info("fileUpload   File path: "+ upload.file.getAbsolutePath() + " name:" + upload.fileName + "," + upload.id);
+	    
+		return true;
 	}
 
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
-	@RolesAllowed({ "Admin" })
-	public String hello(@Context SecurityContext ctx) {
+	@RolesAllowed({ "admin" })
+	//@PermitAll
+	public String check(@Context SecurityContext ctx) {
 		return getResponseString(ctx);
 	}
+	
+
 
 	private String getResponseString(SecurityContext ctx) {
 		String name;
