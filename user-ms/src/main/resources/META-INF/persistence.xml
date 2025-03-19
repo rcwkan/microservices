@@ -13,12 +13,12 @@
         <!-- end::jta-data[] -->
         <properties>
         <!-- tag::schema-generation[] -->
-            <property name="jakarta.persistence.schema-generation.database.action"
+       <!--      <property name="jakarta.persistence.schema-generation.database.action"
                       value="create"/>
             <property name="jakarta.persistence.schema-generation.scripts.action"
                       value="create"/>
             <property name="jakarta.persistence.schema-generation.scripts.create-target"
-                      value="createDDL.ddl"/>
+                      value="createDDL.ddl"/> -->
         <!-- end::schema-generation[] -->
         </properties>
     </persistence-unit>

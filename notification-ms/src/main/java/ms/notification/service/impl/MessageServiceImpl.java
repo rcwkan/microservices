@@ -1,6 +1,5 @@
 package ms.notification.service.impl;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -11,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 import ms.notification.adaptor.EmailAdaptor;
 import ms.notification.model.Message;

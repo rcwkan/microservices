@@ -1,7 +1,5 @@
 package ms.notification.adaptor;
 
-import java.io.IOException;
-
 public interface EmailAdaptor {
 	
 	

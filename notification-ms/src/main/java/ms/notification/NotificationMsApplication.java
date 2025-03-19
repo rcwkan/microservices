@@ -7,8 +7,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 
 @SpringBootApplication
-@EnableScheduling
-@OpenAPIDefinition
+//@EnableScheduling
+//@OpenAPIDefinition
 public class NotificationMsApplication {
 
 	public static void main(String[] args) {
