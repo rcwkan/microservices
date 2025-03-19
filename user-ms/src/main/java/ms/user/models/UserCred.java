@@ -20,13 +20,13 @@ import jakarta.persistence.Table;
 public class UserCred implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "user_cred_id")
-	private int userCredId;
+	private long userCredId;
 
 	@Column(name = "user_id")
-	private int userId;
+	private long userId;
 
 	@Column(name = "is_active")
 	private boolean isActive;
@@ -45,7 +45,7 @@ public class UserCred implements Serializable {
 	public UserCred() {
 	}
 
-	public UserCred(int userId, String pwdHash, boolean isActive, Date createDate) {
+	public UserCred(long userId, String pwdHash, boolean isActive, Date createDate) {
 
 		this.userId = userId;
 		this.pwdHash = pwdHash;
@@ -53,7 +53,7 @@ public class UserCred implements Serializable {
 		this.createDate = createDate;
 	}
 
-	public int getUserCredId() {
+	public long getUserCredId() {
 		return userCredId;
 	}
 
@@ -61,7 +61,7 @@ public class UserCred implements Serializable {
 		this.userCredId = userCredId;
 	}
 
-	public int getUserId() {
+	public long getUserId() {
 		return userId;
 	}
 

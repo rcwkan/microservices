@@ -25,7 +25,7 @@ public class SyncLog extends PanacheEntity {
 	public String status;
 
 	@Lob
-	@Column(name = "zipped_data", columnDefinition = "BLOB")
+	@Column(name = "zipped_data", columnDefinition = "bytea")
 	private byte[] zippedData;
 
 	public SyncLog() {

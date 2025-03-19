@@ -27,19 +27,17 @@ import jakarta.persistence.Column;
 import jakarta.persistence.GenerationType;
 
 @Entity
-@Table(name = "user")
-
+@Table(name = "user_account") 
 @NamedQuery(name = "User.findAll", query = "SELECT e FROM User e")
 @NamedQuery(name = "User.findUser", query = "SELECT e FROM User e WHERE " + "e.username = :username")
 
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@GeneratedValue(strategy = GenerationType.AUTO)
-
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	@Id
 	@Column(name = "user_id")
-	private int userId;
+	private long userId;
 
 	@Column(name = "username")
 	private String username;
@@ -109,7 +107,7 @@ public class User implements Serializable {
 		this.updateDate = updateDate;
 	}
 
-	public int getUserId() {
+	public long getUserId() {
 		return userId;
 	}
 

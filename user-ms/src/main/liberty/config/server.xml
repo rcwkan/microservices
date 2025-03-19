@@ -36,7 +36,7 @@
 
 	<dataSource jndiName="jdbc/userDB">
 		<jdbcDriver libraryRef="jdbcLib" />
-		<properties serverName="localhost" portNumber="3306" databaseName="userdb" user="app" password="P@ss1234" />
+		<properties.postgresql serverName="localhost" portNumber="5432" databaseName="userdb" user="app" password="P@ss1234" />
 	</dataSource>
 
 </server>
