@@ -3,22 +3,16 @@ package ms.user.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import app.core.jwt.JwtVertxUtils;
-import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.json.JsonValue;
 import jakarta.transaction.Transactional;
 import ms.user.dao.UserDao;
-import ms.user.models.User;
+import ms.user.models.UserAccount;
 import ms.user.models.UserCred;
-import ms.user.resources.UserResource;
 import ms.user.service.UserService;
 
 @ApplicationScoped
@@ -31,14 +25,14 @@ public class UserServiceImpl implements UserService {
 	private UserDao userDao;
 
 	@Override
-	public List<User> findUser(String name) {
+	public List<UserAccount> findUser(String name) {
 	 
 		return userDao.findUser(name);
 	}
 
 	@Override
 	@Transactional
-	public void createUser(User newUser, String pwdHash) {
+	public void createUser(UserAccount newUser, String pwdHash) {
 
 		newUser.setCreateDate(new Date());
 
@@ -52,13 +46,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User readUser(int id) {
+	public UserAccount readUser(int id) {
 
 		return userDao.readUser(id);
 	}
 
 	@Override
-	public void updateUser(User prevUser) {
+	public void updateUser(UserAccount prevUser) {
 
 		prevUser.setUpdateDate(new Date());
 		userDao.updateUser(prevUser);
@@ -66,13 +60,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void deleteUser(User user) {
+	public void deleteUser(UserAccount user) {
 		userDao.deleteUser(user);
 
 	}
 
 	@Override
-	public List<User> readAllUsers() {
+	public List<UserAccount> readAllUsers() {
 
 		return userDao.readAllUsers();
 	}

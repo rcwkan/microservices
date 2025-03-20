@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import app.core.jwt.JwtUtils;
-import app.core.jwt.JwtVertxUtils;
 //import app.core.jwt.JwtBuilder;
 import app.core.util.CoreUtils;
 import jakarta.annotation.PostConstruct;
@@ -16,19 +15,23 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import ms.user.dao.UserDao;
-import ms.user.models.User;
+import ms.user.dynamo.UserRepository;
+import ms.user.dynamo.model.User;
+import ms.user.models.UserAccount;
 import ms.user.models.UserCred;
-import ms.user.resources.UserResource;
 import ms.user.service.AuthService;
 
 @ApplicationScoped
 public class AuthServiceImpl implements AuthService {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(AuthServiceImpl.class);
-	 
+
+	// enable if using RDBMS
+	// @Inject
+	// private UserDao userDao;
 
 	@Inject
-	private UserDao userDao;
+	private UserRepository userDao;
 
 	@Inject
 	@ConfigProperty(name = "ms.core.key.store", defaultValue = "key.p12")
@@ -43,8 +46,6 @@ public class AuthServiceImpl implements AuthService {
 	private String keyAlias;
 
 	JwtUtils jwtUtils;
-	
-//	JwtVertxUtils jwtUtils;
 
 	@PostConstruct
 	public void init() {
@@ -54,8 +55,8 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	@Transactional
 	public String authenticate(String username, String pwd) throws Exception {
-		
-		log.info("authenticate: {}",username);
+
+		log.info("authenticate: {}", username);
 
 		List<User> users = userDao.findUser(username);
 		;
@@ -63,15 +64,19 @@ public class AuthServiceImpl implements AuthService {
 			throw new Exception("User not found. username:" + username);
 		}
 
-		List<UserCred> creds = users.get(0).getCreds().stream().filter(c -> c.isActive()).collect(Collectors.toList());
+		User user = users.get(0);
+//		List<UserCred> creds = users.get(0).getCreds().stream().filter(c -> c.isActive()).collect(Collectors.toList());
 
-		if (creds.isEmpty() || creds.size() != 1) {
-			throw new Exception("Password expired.");
-		}
+//		if (creds.isEmpty() || creds.size() != 1) {
+//			throw new Exception("Password expired.");
+//		}
+//
+//		if (creds.get(0).getPwdHash().equals(CoreUtils.hashString(pwd))) {
+//			return jwtUtils.generateToken(username);
+//		}
 
-		if (creds.get(0).getPwdHash().equals(CoreUtils.hashString(pwd))) {
-			return jwtUtils.generateToken(username);
-		}
+		if (user.getPwdHash().equals(CoreUtils.hashString(pwd)))
+			return jwtUtils.generateToken(user.getUsername());
 
 		throw new Exception("Login Failed.");
 

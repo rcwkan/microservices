@@ -11,18 +11,18 @@
 // end::copyright[]
 package it.io.openliberty.guides.system;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import it.io.openliberty.guides.system.util.JwtBuilder;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Invocation.Builder;
-import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import it.io.openliberty.guides.system.util.JwtBuilder;
+import jakarta.ws.rs.core.Response;
 
 public class SystemEndpointIT {
 

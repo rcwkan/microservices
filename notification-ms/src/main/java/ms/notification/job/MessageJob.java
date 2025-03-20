@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ms.notification.dynamo.repository.model.Email;
 import ms.notification.model.Message;
 import ms.notification.service.MessageService;
 
@@ -33,9 +34,9 @@ public class MessageJob {
 		// resend retry message
 
 		// get List of message to retry
-		List<Message> messages = messageService.findRetryMessages();
+		List<Email> messages = messageService.findRetryMessages();
 
-		for (Message m : messages) {
+		for (Email m : messages) {
 			try {
 				messageService.sendEmail(m);
 			} catch (Exception e) {

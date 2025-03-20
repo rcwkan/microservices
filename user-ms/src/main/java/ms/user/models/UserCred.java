@@ -2,7 +2,6 @@ package ms.user.models;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,7 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -39,7 +37,7 @@ public class UserCred implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
-	private User user;
+	private UserAccount user;
 	
 
 	public UserCred() {
@@ -93,11 +91,11 @@ public class UserCred implements Serializable {
 		this.createDate = createDate;
 	}
 
-	public User getUser() {
+	public UserAccount getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(UserAccount user) {
 		this.user = user;
 	}
 

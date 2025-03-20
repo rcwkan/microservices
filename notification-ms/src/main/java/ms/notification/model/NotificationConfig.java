@@ -1,12 +1,12 @@
 package ms.notification.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+//import jakarta.persistence.Entity;
+//import jakarta.persistence.Id;
 
-@Entity
+//@Entity
 public class NotificationConfig {
 
-	@Id
+//	@Id
 	private String username;
 
 	private String defaultNotiType;

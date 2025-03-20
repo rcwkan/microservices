@@ -1,37 +1,25 @@
-// tag::copyright[]
-/*******************************************************************************
- * Copyright (c) 2018, 2022 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
-// end::copyright[]
+ 
 package ms.user.models;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Column;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "user_account") 
-@NamedQuery(name = "User.findAll", query = "SELECT e FROM User e")
-@NamedQuery(name = "User.findUser", query = "SELECT e FROM User e WHERE " + "e.username = :username")
-
-public class User implements Serializable {
+@NamedQuery(name = "UserAccount.findAll", query = "SELECT e FROM UserAccount e")
+@NamedQuery(name = "UserAccount.findUser", query = "SELECT e FROM UserAccount e WHERE " + "e.username = :username")
+public class UserAccount implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
@@ -58,10 +46,10 @@ public class User implements Serializable {
 	@OneToMany(mappedBy = "user") 
 	private List<UserCred> creds;
 
-	public User() {
+	public UserAccount() {
 	}
 
-	public User(String username, String email, String displayName) {
+	public UserAccount(String username, String email, String displayName) {
 		this.username = username;
 		this.email = email;
 		this.displayName = displayName;
@@ -134,7 +122,7 @@ public class User implements Serializable {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		User other = (User) obj;
+		UserAccount other = (UserAccount) obj;
 
 		return true;
 	}

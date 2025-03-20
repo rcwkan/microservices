@@ -2,22 +2,21 @@ package ms.user.service;
 
 import java.util.List;
 
-import jakarta.json.JsonValue;
-import ms.user.models.User;
+import ms.user.models.UserAccount;
 
 public interface UserService {
 
-	List<User> findUser(String username);
+	List<UserAccount> findUser(String username);
 
-	void createUser(User newUser, String pwdHash);
+	void createUser(UserAccount newUser, String pwdHash);
 
-	User readUser(int id);
+	UserAccount readUser(int id);
 
-	void updateUser(User prevUser);
+	void updateUser(UserAccount prevUser);
 
-	void deleteUser(User user);
+	void deleteUser(UserAccount user);
 
-	List<User> readAllUsers();
+	List<UserAccount> readAllUsers();
 
 	 
 

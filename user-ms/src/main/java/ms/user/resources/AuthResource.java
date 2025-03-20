@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import app.core.util.CoreUtils;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
- 
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.FormParam;
@@ -15,8 +14,7 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
- 
-import ms.user.models.User;
+import ms.user.models.UserAccount;
 import ms.user.service.AuthService;
 import ms.user.service.UserService;
  
@@ -69,7 +67,7 @@ public class AuthResource {
 			@FormParam("password") String password
 			
 			) {
-		User newUser = new User(username, email, displayName);
+		UserAccount newUser = new UserAccount(username, email, displayName);
 		if (!userService.findUser(username).isEmpty()) {
 			return Response.status(Response.Status.BAD_REQUEST).entity("User already exists").build();
 		}

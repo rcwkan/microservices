@@ -2,12 +2,11 @@
 package ms.user.dao;
 
 import java.util.List;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import ms.user.models.User;
- 
 
 import jakarta.enterprise.context.RequestScoped;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import ms.user.models.UserAccount;
 
 @RequestScoped 
 public class UserDao {
@@ -17,34 +16,34 @@ public class UserDao {
     private EntityManager em;
 
    
-    public void createUser(User user) { 
+    public void createUser(UserAccount user) { 
         em.persist(user); 
     }
   
-    public User readUser(int UserId) {
+    public UserAccount readUser(int UserId) {
        
-        return em.find(User.class, UserId);
+        return em.find(UserAccount.class, UserId);
        
     }
    
-    public void updateUser(User User) {
+    public void updateUser(UserAccount User) {
         
         em.merge(User);
     
     }
  
-    public void deleteUser(User User) {
+    public void deleteUser(UserAccount User) {
     
         em.remove(User);
    
     }
     
-    public List<User> readAllUsers () {
-        return em.createNamedQuery("User.findAll", User.class).getResultList();
+    public List<UserAccount> readAllUsers () {
+        return em.createNamedQuery("UserAccount.findAll", UserAccount.class).getResultList();
     }
   
-    public List<User> findUser(String username ) {
-        return em.createNamedQuery("User.findUser", User.class)
+    public List<UserAccount> findUser(String username ) {
+        return em.createNamedQuery("UserAccount.findUser", UserAccount.class)
             .setParameter("username", username)
          .getResultList();
     }

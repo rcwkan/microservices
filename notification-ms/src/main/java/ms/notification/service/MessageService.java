@@ -2,17 +2,18 @@ package ms.notification.service;
 
 import java.util.List;
 
-import ms.notification.model.Message;
+import ms.notification.dynamo.repository.model.Email;
+ 
 
 public interface MessageService {
 
-	Message sendMessage(Message m) throws Exception;
+	Email sendMessage(Email m) throws Exception;
 	
-	Message notify(String username, String message) throws Exception;
+	Email notify(String username, String message) throws Exception;
 
-	Message sendEmail(Message m) throws Exception;
+	Email sendEmail(Email m) throws Exception;
 
-	List<Message> findRetryMessages();
+	List<Email> findRetryMessages();
 	
 	
 	

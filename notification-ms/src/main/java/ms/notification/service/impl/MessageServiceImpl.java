@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import ms.notification.adaptor.EmailAdaptor;
+import ms.notification.dynamo.repository.EmailRepository;
+import ms.notification.dynamo.repository.model.Email;
 import ms.notification.model.Message;
 import ms.notification.repository.MessageRepository;
 import ms.notification.service.MessageService;
@@ -32,12 +34,15 @@ public class MessageServiceImpl implements MessageService {
 	@Autowired
 	EmailAdaptor emailAdaptor;
 
+	// @Autowired
+	// MessageRepository messageRepository;
+
 	@Autowired
-	MessageRepository messageRepository;
+	EmailRepository messageRepository;
 
 	@Override
 	@Transactional
-	public Message notify(String username, String message) throws Exception {
+	public Email notify(String username, String message) throws Exception {
 
 		// validation
 		if (StringUtils.isEmpty(username)) {
@@ -51,42 +56,47 @@ public class MessageServiceImpl implements MessageService {
 //		msg.setStatus(MSG_STATUS_PENDING);
 //		msg.setCreateDate(new Date());
 
-		Message msg = Message.builder().msgTo(username).content(message).status(MSG_STATUS_PENDING)
-				.createDate(new Date()).build();
-		messageRepository.save(msg);
+//		Message msg = Message.builder().msgTo(username).content(message).status(MSG_STATUS_PENDING)
+//				.createDate(new Date()).build();
+//		messageRepository.save(msg);
 
-		return sendEmail(msg);
+		Email email = Email.builder().entityType("email").to(username).content(message).status(MSG_STATUS_PENDING).createDate(new Date())
+				.build();
+		messageRepository.save(email);
+
+		return sendEmail(email);
 
 	}
 
 	@Override
 	@Transactional
-	public Message sendMessage(Message msg) throws Exception {
+	public Email sendMessage(Email email) throws Exception {
 
 		// validation
-		if (StringUtils.isEmpty(msg.getMsgTo())) {
+		if (StringUtils.isEmpty(email.getTo())) {
 			throw new Exception("Missing msgTo.");
 		}
-		if (StringUtils.isEmpty(msg.getContent())) {
+		if (StringUtils.isEmpty(email.getContent())) {
 			throw new Exception("Missing content.");
 		}
+		
+		
+		email.setEntityType("email");
+		email.setStatus(MSG_STATUS_PENDING);
+		email.setCreateDate(new Date());
 
-		msg.setStatus(MSG_STATUS_PENDING);
-		msg.setCreateDate(new Date());
+		messageRepository.save(email);
 
-		messageRepository.save(msg);
-
-		return sendEmail(msg);
+		return sendEmail(email);
 
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW) 
-	public Message sendEmail(Message m) throws Exception {
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public Email sendEmail(Email m) throws Exception {
 
- 
 //		try {
-		boolean	success = emailAdaptor.send(m.getMsgFrom(), m.getMsgTo(), m.getSubject(), m.getContent(), null);
+		boolean success = emailAdaptor.send(m.getFrom(), m.getTo(), m.getSubject(), m.getContent(), null);
 //		} catch (IOException e) {
 //			log.warn(e.getMessage(), e);
 //			success = false;
@@ -102,18 +112,15 @@ public class MessageServiceImpl implements MessageService {
 		} else {
 			m.setStatus(MSG_STATUS_SENT);
 		}
-		
+
 		messageRepository.save(m);
 
 		return m;
 	}
 
-	
- 
-
 	@Override
 	@Transactional(readOnly = true)
-	public List<Message> findRetryMessages() {
+	public List<Email> findRetryMessages() {
 		return messageRepository.findByStatus(MSG_STATUS_RETRY);
 	}
 
