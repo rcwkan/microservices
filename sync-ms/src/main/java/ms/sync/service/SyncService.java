@@ -2,7 +2,8 @@ package ms.sync.service;
 
 import java.io.File;
 
-import ms.sync.entity.SyncLog;
+import ms.sync.dynamo.entity.SyncLog;
+ 
 
 public interface SyncService {
 

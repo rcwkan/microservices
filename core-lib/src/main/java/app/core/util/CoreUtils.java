@@ -23,6 +23,11 @@ public class CoreUtils {
 		return list;
 		
 	}
+
+	public static String hashPwd(String userId, String password) {
+		 
+		return CoreUtils.hashString(userId + password);
+	}
 	
 
 }

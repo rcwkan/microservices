@@ -19,8 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ms.notification.dynamo.repository.model.Email;
-import ms.notification.model.Message;
+import ms.notification.dynamo.repository.model.Message;
+import ms.notification.model.Message2;
 import ms.notification.service.MessageService;
 
 @SpringBootTest
@@ -36,9 +36,9 @@ public class MessageControllerTests {
 	@Test
 	void sendTest() throws Exception {
 
-		Email message = Email.builder().to("tester01").content("Message").status("S").build();
+		Message message = Message.builder().to("tester01").content("Message").status("S").build();
 
-		Mockito.when(messageService.sendMessage(any(Email.class))).thenReturn(message);
+		Mockito.when(messageService.sendMessage(any(Message.class))).thenReturn(message);
 
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(message);
@@ -55,7 +55,7 @@ public class MessageControllerTests {
 	@Test
 	void sendTest_missing_to() throws Exception {
 
-		Email message = Email.builder().content("Message").build();
+		Message message = Message.builder().content("Message").build();
 
 		Mockito.when(messageService.sendMessage(message)).thenThrow(new Exception("Missing msgTo."));
 
@@ -72,7 +72,7 @@ public class MessageControllerTests {
 	@Test
 	void sendTest_missing_content() throws Exception {
 
-		Email message = Email.builder().to("tester01").build();
+		Message message = Message.builder().to("tester01").build();
 
 		Mockito.when(messageService.sendMessage(message)).thenThrow(new Exception("Missing content."));
 
@@ -89,9 +89,9 @@ public class MessageControllerTests {
 	@Test
 	void sendTest_internal_error() throws Exception {
 
-		Email message = Email.builder().to("tester01").content("Message").status("P").build();
+		Message message = Message.builder().to("tester01").content("Message").status("P").build();
 
-		Mockito.when(messageService.sendMessage(any(Email.class))).thenReturn(message);
+		Mockito.when(messageService.sendMessage(any(Message.class))).thenReturn(message);
 
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(message);
@@ -106,7 +106,7 @@ public class MessageControllerTests {
 	@Test
 	void notifyTest() throws Exception {
 		
-		Email message = Email.builder().to("tester01").content("Message").status("S").build();
+		Message message = Message.builder().to("tester01").content("Message").status("S").build();
 
 
 		Mockito.when(messageService.notify("tester01", "Message")).thenReturn(message);

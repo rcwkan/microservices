@@ -1,15 +1,15 @@
 package ms.sync.service.impl;
 
-import ms.sync.entity.SyncLog;
-import ms.sync.resources.SyncResource;
-import ms.sync.service.SyncService;
-
 import java.io.File;
 
 import org.jboss.logging.Logger;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import ms.sync.dynamo.SyncLogRepository;
+import ms.sync.dynamo.entity.SyncLog;
+import ms.sync.service.SyncService;
 
 @ApplicationScoped 
 public class SyncServiceImpl implements SyncService {
@@ -17,13 +17,19 @@ public class SyncServiceImpl implements SyncService {
 
 	private static final Logger log = Logger.getLogger(SyncServiceImpl.class);
 	
+	@Inject
+	SyncLogRepository syncLogRepository;
+	
 	
 	@Override
 	@Transactional
 	public SyncLog createSyncLog(SyncLog syncLog) {
 		
 		log.infov("createSyncLog : "+ syncLog.username);
-		syncLog.persist();
+ 
+		
+		syncLog.setCreateDate(System.currentTimeMillis());
+		syncLogRepository.save(syncLog);
 		
 		return syncLog;
 	}

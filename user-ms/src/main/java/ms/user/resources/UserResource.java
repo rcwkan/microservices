@@ -36,6 +36,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
+import ms.user.dynamo.model.User;
 import ms.user.models.UserAccount;
 import ms.user.service.UserService;
 
@@ -61,10 +62,10 @@ public class UserResource {
 		log.info("getMe: {}" , securityContext.getUserPrincipal().getName());
 		JsonObjectBuilder builder = Json.createObjectBuilder();
 		 
-		List<UserAccount> users = userService.findUser(securityContext.getUserPrincipal().getName());
+		List<User> users = userService.findUser(securityContext.getUserPrincipal().getName());
 		if (users != null && users.size() == 1) {
 			
-			UserAccount user = users.get(0);
+			User user = users.get(0);
 			builder.add("username", user.getUsername()).add("displayName", user.getDisplayName())
 					.add("createDate", user.getCreateDate().getTime()).add("id", user.getUserId());
 		}
@@ -80,8 +81,8 @@ public class UserResource {
 	@RolesAllowed({ "admin", "user" })
 	@Transactional
 	public Response updateUser(@FormParam("username") String username, @FormParam("displayName") String displayName,
-			@FormParam("email") String email, @PathParam("id") int id) {
-		UserAccount prevUser = userService.readUser(id);
+			@FormParam("email") String email, @PathParam("id") String id) {
+		User prevUser = userService.readUser(id);
 		if (prevUser == null) {
 			return Response.status(Response.Status.NOT_FOUND).entity("User does not exist").build();
 		}
@@ -103,8 +104,8 @@ public class UserResource {
 	@Path("{id}")
 	@RolesAllowed({ "admin" })
 	@Transactional
-	public Response deleteUser(@PathParam("id") int id) {
-		UserAccount User = userService.readUser(id);
+	public Response deleteUser(@PathParam("id") String userId) {
+		User User = userService.readUser(userId);
 		if (User == null) {
 			return Response.status(Response.Status.NOT_FOUND).entity("User does not exist").build();
 		}
@@ -120,9 +121,9 @@ public class UserResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@RolesAllowed({ "admin", "user" })
 	@Transactional
-	public JsonObject getUser(@PathParam("id") int UserId) {
+	public JsonObject getUser(@PathParam("id") String userId) {
 		JsonObjectBuilder builder = Json.createObjectBuilder();
-		UserAccount user = userService.readUser(UserId);
+		User user = userService.readUser(userId);
 		if (user != null) {
 			builder.add("username", user.getUsername()).add("displayName", user.getDisplayName())
 					.add("createDate", user.getCreateDate().getTime()).add("id", user.getUserId());
@@ -140,7 +141,7 @@ public class UserResource {
 	public JsonArray getUsers() {
 		JsonObjectBuilder builder = Json.createObjectBuilder();
 		JsonArrayBuilder finalArray = Json.createArrayBuilder();
-		for (UserAccount user : userService.readAllUsers()) {
+		for (User user : userService.readAllUsers()) {
 			builder.add("username", user.getUsername()).add("displayName", user.getDisplayName())
 					.add("createDate", user.getCreateDate().getTime()).add("id", user.getUserId());
 			finalArray.add(builder.build());

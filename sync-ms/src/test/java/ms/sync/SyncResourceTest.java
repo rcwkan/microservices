@@ -1,6 +1,15 @@
 package ms.sync;
 
-import org.junit.jupiter.api.BeforeAll;
+import static io.restassured.RestAssured.given;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -10,25 +19,11 @@ import io.quarkus.test.common.http.TestHTTPResource;
 import io.quarkus.test.junit.QuarkusMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
-import io.restassured.http.ContentType;
-import ms.sync.entity.SyncLog;
+import ms.sync.dynamo.entity.SyncLog;
 import ms.sync.model.FileResource;
 import ms.sync.resources.SyncResource;
 import ms.sync.service.SyncService;
 import ms.sync.service.impl.SyncServiceImpl;
-
-import static io.restassured.RestAssured.given;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
 
 @QuarkusTest
 @TestHTTPEndpoint(SyncResource.class)

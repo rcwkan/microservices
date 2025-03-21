@@ -1,7 +1,7 @@
 package ms.sync.model;
 
 import java.io.File;
- 
+
 import jakarta.ws.rs.FormParam;
 
 public class FileResource {

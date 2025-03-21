@@ -16,9 +16,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import ms.notification.dynamo.repository.model.Email;
+import ms.notification.dynamo.repository.model.Message;
 import ms.notification.model.JwtUserDetails;
-import ms.notification.model.Message;
+import ms.notification.model.Message2;
 import ms.notification.service.MessageService;
 import ms.user.client.api.DefaultApi;
 
@@ -42,7 +42,7 @@ public class MessageController {
 			@ApiResponse(responseCode = "500", description = "System Error.") })
 
 	@PostMapping("/send")
-	public ResponseEntity<String> sendMesssage(@RequestBody Email message) {
+	public ResponseEntity<String> sendMesssage(@RequestBody Message message) {
 
 		log.info("sendMesssage: {}", message);
 
@@ -60,7 +60,7 @@ public class MessageController {
 			log.info("userApi.usersMeGet():" + obj);
 			
 
-			Email sMessage = messageService.sendMessage(message);
+			Message sMessage = messageService.sendMessage(message);
 
 			success = "S".equals(sMessage.getStatus());
 
@@ -87,7 +87,7 @@ public class MessageController {
 
 		boolean success;
 		try {
-			Email sMessage = messageService.notify(username, content);
+			Message sMessage = messageService.notify(username, content);
 
 			success = "S".equals(sMessage.getStatus());
 

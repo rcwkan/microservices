@@ -12,10 +12,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import ms.notification.adaptor.EmailAdaptor;
-import ms.notification.dynamo.repository.EmailRepository;
-import ms.notification.dynamo.repository.model.Email;
-import ms.notification.model.Message;
-import ms.notification.repository.MessageRepository;
+import ms.notification.dynamo.repository.MessageRepository;
+import ms.notification.dynamo.repository.model.Message;
+import ms.notification.model.Message2;
+import ms.notification.repository.Message2Repository;
 import ms.notification.service.MessageService;
 
 @Service
@@ -38,11 +38,11 @@ public class MessageServiceImpl implements MessageService {
 	// MessageRepository messageRepository;
 
 	@Autowired
-	EmailRepository messageRepository;
+	MessageRepository messageRepository;
 
 	@Override
 	@Transactional
-	public Email notify(String username, String message) throws Exception {
+	public Message notify(String username, String message) throws Exception {
 
 		// validation
 		if (StringUtils.isEmpty(username)) {
@@ -60,7 +60,7 @@ public class MessageServiceImpl implements MessageService {
 //				.createDate(new Date()).build();
 //		messageRepository.save(msg);
 
-		Email email = Email.builder().entityType("email").to(username).content(message).status(MSG_STATUS_PENDING).createDate(new Date())
+		Message email = Message.builder().entityType(Message.TYPE_EMAIL).to(username).content(message).status(MSG_STATUS_PENDING).createDate(new Date())
 				.build();
 		messageRepository.save(email);
 
@@ -70,7 +70,7 @@ public class MessageServiceImpl implements MessageService {
 
 	@Override
 	@Transactional
-	public Email sendMessage(Email email) throws Exception {
+	public Message sendMessage(Message email) throws Exception {
 
 		// validation
 		if (StringUtils.isEmpty(email.getTo())) {
@@ -81,7 +81,7 @@ public class MessageServiceImpl implements MessageService {
 		}
 		
 		
-		email.setEntityType("email");
+		email.setEntityType(Message.TYPE_EMAIL);
 		email.setStatus(MSG_STATUS_PENDING);
 		email.setCreateDate(new Date());
 
@@ -93,7 +93,7 @@ public class MessageServiceImpl implements MessageService {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public Email sendEmail(Email m) throws Exception {
+	public Message sendEmail(Message m) throws Exception {
 
 //		try {
 		boolean success = emailAdaptor.send(m.getFrom(), m.getTo(), m.getSubject(), m.getContent(), null);
@@ -120,7 +120,7 @@ public class MessageServiceImpl implements MessageService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Email> findRetryMessages() {
+	public List<Message> findRetryMessages() {
 		return messageRepository.findByStatus(MSG_STATUS_RETRY);
 	}
 

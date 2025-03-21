@@ -1,14 +1,20 @@
 package ms.user.dynamo.model;
 
+import java.util.Date;
+import java.util.UUID;
+
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
 
-@Entity("account")
+@Entity("user")
 public class User {
- 
 
-//	@Id
+ 
+    @Id("userId") 
+    private String userId;
+ 
+ 
 	@Column
 	private String username;
 
@@ -25,10 +31,26 @@ public class User {
 	private String pwdHash;
 
 	@Column
-	private long createDate;
+	private Date createDate;
+
+	public User() { 
+		this.isActive = true;
+//		this.userId = UUID.randomUUID().toString();
+	}
+
+	public User(String username, String email, String displayName) {
+		 
+		this.username = username;
+		this.email = email;
+		this.displayName = displayName;
  
+		this.isActive = true; 
+		this.userId = UUID.randomUUID().toString();
+	}
+
 	public String getUsername() {
 		return username;
+
 	}
 
 	public void setUsername(String username) {
@@ -67,12 +89,23 @@ public class User {
 		this.pwdHash = pwdHash;
 	}
 
-	public long getCreateDate() {
+	public Date getCreateDate() {
 		return createDate;
 	}
 
-	public void setCreateDate(long createDate) {
+	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+ 
+ 
+	
 
 }

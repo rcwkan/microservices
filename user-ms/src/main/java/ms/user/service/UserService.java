@@ -2,21 +2,22 @@ package ms.user.service;
 
 import java.util.List;
 
-import ms.user.models.UserAccount;
+import ms.user.dynamo.model.User;
+ 
 
 public interface UserService {
 
-	List<UserAccount> findUser(String username);
+	List<User> findUser(String username);
 
-	void createUser(UserAccount newUser, String pwdHash);
+	void createUser(User newUser);
 
-	UserAccount readUser(int id);
+	User readUser(String id);
 
-	void updateUser(UserAccount prevUser);
+	void updateUser(User prevUser);
 
-	void deleteUser(UserAccount user);
+	void deleteUser(User user);
 
-	List<UserAccount> readAllUsers();
+	List<User> readAllUsers();
 
 	 
 

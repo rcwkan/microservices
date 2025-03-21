@@ -75,7 +75,7 @@ public class AuthServiceImpl implements AuthService {
 //			return jwtUtils.generateToken(username);
 //		}
 
-		if (user.getPwdHash().equals(CoreUtils.hashString(pwd)))
+		if (user.getPwdHash().equals(CoreUtils.hashPwd(user.getUserId(), pwd)))
 			return jwtUtils.generateToken(user.getUsername());
 
 		throw new Exception("Login Failed.");

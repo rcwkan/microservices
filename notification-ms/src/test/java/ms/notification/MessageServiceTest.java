@@ -13,9 +13,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import ms.notification.adaptor.EmailAdaptor;
-import ms.notification.dynamo.repository.EmailRepository;
-import ms.notification.dynamo.repository.model.Email;
-import ms.notification.model.Message;
+import ms.notification.dynamo.repository.MessageRepository;
+import ms.notification.dynamo.repository.model.Message;
+import ms.notification.model.Message2;
  
 import ms.notification.service.MessageService;
 import ms.notification.service.impl.MessageServiceImpl;
@@ -24,7 +24,7 @@ import ms.notification.service.impl.MessageServiceImpl;
 public class MessageServiceTest {
 
 	@Mock
-	private EmailRepository messageRepository;
+	private MessageRepository messageRepository;
 
 	@Mock
 	private EmailAdaptor emailAdaptor;
@@ -39,16 +39,16 @@ public class MessageServiceTest {
 	@Test
 	public void notifyMessage() throws Exception {
 
-		Email message = Email.builder().to("tester01").content("Message").build();
+		Message message = Message.builder().to("tester01").content("Message").build();
 
 		Mockito.when(this.messageRepository.save(message)).thenReturn(message);
 		Mockito.when(this.emailAdaptor.send(message.getFrom(), message.getTo(), message.getSubject(),
 				message.getContent(), null)).thenReturn(true);
 
 		try {
-			Email successMsg = this.messageService.notify(message.getTo(), message.getContent());
+			Message successMsg = this.messageService.notify(message.getTo(), message.getContent());
 
-			Mockito.verify(this.messageRepository, Mockito.times(2)).save(any(Email.class));
+			Mockito.verify(this.messageRepository, Mockito.times(2)).save(any(Message.class));
 
 			Mockito.verify(this.emailAdaptor, Mockito.times(1)).send(message.getFrom(), message.getTo(),
 					message.getSubject(), message.getContent(), null);
@@ -63,7 +63,7 @@ public class MessageServiceTest {
 	@Test
 	public void sendMessage() throws Exception {
 
-		Email message = Email.builder().to("tester01").content("Message").build();
+		Message message = Message.builder().to("tester01").content("Message").build();
 
 		Mockito.when(this.messageRepository.save(message)).thenReturn(message);
 		Mockito.when(this.emailAdaptor.send(message.getFrom(), message.getTo(), message.getSubject(),
@@ -71,7 +71,7 @@ public class MessageServiceTest {
 
 		try {
 
-			Email successMsg = this.messageService.sendMessage(message);
+			Message successMsg = this.messageService.sendMessage(message);
 
 			Mockito.verify(this.messageRepository, Mockito.times(2)).save(message);
 
@@ -89,7 +89,7 @@ public class MessageServiceTest {
 	@Test
 	public void sendMessage_missing_username() {
 
-		Email message = Email.builder().content("Message").build();
+		Message message = Message.builder().content("Message").build();
 
 		try {
 
@@ -106,7 +106,7 @@ public class MessageServiceTest {
 	@Test
 	public void sendMessage_missing_content() {
 
-		Email message = Email.builder().to("tester01").build();
+		Message message = Message.builder().to("tester01").build();
 
 		try {
 

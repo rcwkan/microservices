@@ -14,6 +14,7 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import ms.user.dynamo.model.User;
 import ms.user.models.UserAccount;
 import ms.user.service.AuthService;
 import ms.user.service.UserService;
@@ -67,13 +68,14 @@ public class AuthResource {
 			@FormParam("password") String password
 			
 			) {
-		UserAccount newUser = new UserAccount(username, email, displayName);
+		User newUser = new User(username, email, displayName);
+		newUser.setPwdHash(CoreUtils.hashPwd(newUser.getUserId() , password));
 		if (!userService.findUser(username).isEmpty()) {
 			return Response.status(Response.Status.BAD_REQUEST).entity("User already exists").build();
 		}
 		
 		 
-		userService.createUser(newUser, CoreUtils.hashString(password));
+		userService.createUser(newUser);
 		 
 		
 		return Response.status(Response.Status.NO_CONTENT).build();

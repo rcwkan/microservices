@@ -11,12 +11,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+//JPA Entity
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 //@Entity
-public class Message {
+public class Message2 {
 
 	@JsonIgnore
 	//@Id
