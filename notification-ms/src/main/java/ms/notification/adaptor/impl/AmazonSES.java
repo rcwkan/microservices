@@ -8,15 +8,15 @@ import org.springframework.stereotype.Service;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.regions.Regions;
-import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
-import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
-import com.amazonaws.services.simpleemail.model.Body;
-import com.amazonaws.services.simpleemail.model.Content;
-import com.amazonaws.services.simpleemail.model.Destination;
-import com.amazonaws.services.simpleemail.model.Message;
-import com.amazonaws.services.simpleemail.model.SendEmailRequest;
+//import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
+//import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
+//import com.amazonaws.services.simpleemail.model.Body;
+//import com.amazonaws.services.simpleemail.model.Content;
+//import com.amazonaws.services.simpleemail.model.Destination;
+//import com.amazonaws.services.simpleemail.model.Message;
+//import com.amazonaws.services.simpleemail.model.SendEmailRequest;
 
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+//import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.annotation.PostConstruct;
 import ms.notification.adaptor.EmailAdaptor;
 
@@ -58,11 +58,12 @@ public class AmazonSES implements EmailAdaptor {
 		};
 	}
 
-	@CircuitBreaker(name = "externalEmailService", fallbackMethod = "sendFallback")
+//	@CircuitBreaker(name = "externalEmailService", fallbackMethod = "sendFallback")
 	public boolean send(String from, String to, String subject, String htmlContent, String textContent)
 			throws Exception {
 
 		try {
+			/*
 			AmazonSimpleEmailService client = AmazonSimpleEmailServiceClientBuilder.standard()
 					.withRegion(Regions.AP_SOUTHEAST_1).withCredentials(credentialsProvider).build();
 
@@ -78,6 +79,7 @@ public class AmazonSES implements EmailAdaptor {
 					.withMessage(msg).withSource(from);
 
 			client.sendEmail(request);
+			*/
 			return true;
 		} catch (Exception ex) {
 			log.warn("The email was not sent. Error message: " + ex.getMessage(), ex);

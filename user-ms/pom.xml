@@ -68,8 +68,9 @@
 			<artifactId>jnosql-dynamodb</artifactId>
 			<version>1.1.4</version>
 		</dependency>
-		
-		
+
+	
+
 		<!-- Java utility classes -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>

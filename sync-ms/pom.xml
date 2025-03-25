@@ -68,7 +68,16 @@
 			<version>1.0.0</version>
 		</dependency>
 
-		
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-amazon-lambda</artifactId>
+
+		</dependency>
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-arc</artifactId>
+
+		</dependency>
 		<dependency>
 			<groupId>software.amazon.awssdk</groupId>
 			<artifactId>url-connection-client</artifactId>
@@ -226,6 +235,7 @@
 				</property>
 			</activation>
 			<properties>
+				<quarkus.package.type>native</quarkus.package.type>
 				<skipITs>false</skipITs>
 				<quarkus.native.enabled>true</quarkus.native.enabled>
 			</properties>

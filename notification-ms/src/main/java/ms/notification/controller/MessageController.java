@@ -18,7 +18,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import ms.notification.dynamo.repository.model.Message;
 import ms.notification.model.JwtUserDetails;
-import ms.notification.model.Message2;
 import ms.notification.service.MessageService;
 import ms.user.client.api.DefaultApi;
 
@@ -50,14 +49,14 @@ public class MessageController {
 
 		try {
 			
-			JwtUserDetails jUSer = (JwtUserDetails) SecurityContextHolder.getContext().getAuthentication()
-					.getPrincipal();
-			userApi.getApiClient().addDefaultHeader("Authorization", "Bearer " + jUSer.getJwt());
-
-			log.info("sendMesssage jUSer.getJwt() {}", jUSer.getJwt());
-			Object obj = userApi.usersMeGet();
-
-			log.info("userApi.usersMeGet():" + obj);
+//			JwtUserDetails jUSer = (JwtUserDetails) SecurityContextHolder.getContext().getAuthentication()
+//					.getPrincipal();
+//			userApi.getApiClient().addDefaultHeader("Authorization", "Bearer " + jUSer.getJwt());
+//
+//			log.info("sendMesssage jUSer.getJwt() {}", jUSer.getJwt());
+//			Object obj = userApi.usersMeGet();
+//
+//			log.info("userApi.usersMeGet():" + obj);
 			
 
 			Message sMessage = messageService.sendMessage(message);

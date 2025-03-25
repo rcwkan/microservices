@@ -14,8 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ms.notification.adaptor.EmailAdaptor;
 import ms.notification.dynamo.repository.MessageRepository;
 import ms.notification.dynamo.repository.model.Message;
-import ms.notification.model.Message2;
-import ms.notification.repository.Message2Repository;
+ 
 import ms.notification.service.MessageService;
 
 @Service
