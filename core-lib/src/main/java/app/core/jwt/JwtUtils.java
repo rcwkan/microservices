@@ -19,18 +19,16 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
- 
 
 public class JwtUtils {
 
 	private static final Logger log = LoggerFactory.getLogger(JwtUtils.class);
- 
+
 	private String keyAlgo = "PKCS12";
 
 	private static String keyPass = "password";
 
 	private static String keyAlias = "default";
- 
 
 	private String privateKeyPath;
 
@@ -51,6 +49,15 @@ public class JwtUtils {
 			instance = new JwtUtils();
 		}
 
+		return instance;
+	}
+
+	public static JwtUtils getInstance(File privateKeyFile, String alias, String pass) {
+
+		if (instance == null) {
+			instance = new JwtUtils();
+		}
+		instance.loadKeyPair(privateKeyFile);
 		return instance;
 	}
 
@@ -91,7 +98,7 @@ public class JwtUtils {
 		Jwts.parser().verifyWith(this.getPublicKey()).build().parse(jwt);
 		return true;
 	}
-	
+
 	public String generateToken(String username) {
 		return generateToken(username, Arrays.asList("user"), Arrays.asList("user"));
 	}
@@ -110,8 +117,8 @@ public class JwtUtils {
 		if (skewSeconds != null) {
 			claims.put(Claims.NOT_BEFORE, skewSeconds);
 		}
-		
-		//openliberty use groups as permission/role
+
+		// openliberty use groups as permission/role
 		if (groups != null && !groups.isEmpty())
 			claims.put("groups", groups);
 		if (roles != null && !roles.isEmpty())
@@ -135,18 +142,18 @@ public class JwtUtils {
 		return new Date(createdDate.getTime() + expiration * 1000);
 	}
 
-	private void loadKeyPair() {
+	private void loadKeyPair(File filePrivateKey) {
 		try {
 
 			ClassLoader classLoader = JwtUtils.class.getClassLoader();
- 
 
 			// Read Private Key.
-			File filePrivateKey;
-			if (privateKeyClasspath != null) {
-				filePrivateKey = new File(classLoader.getResource(privateKeyClasspath).getFile());
-			} else {
-				filePrivateKey = new File(privateKeyPath);
+			if (filePrivateKey == null) {
+				if (privateKeyClasspath != null) {
+					filePrivateKey = new File(classLoader.getResource(privateKeyClasspath).getFile());
+				} else {
+					filePrivateKey = new File(privateKeyPath);
+				}
 			}
 			FileInputStream fis = new FileInputStream(filePrivateKey);
 			byte[] encodedPrivateKey = new byte[(int) filePrivateKey.length()];
@@ -168,14 +175,14 @@ public class JwtUtils {
 
 	private PrivateKey getPrivateKey() {
 		if (JwtUtils.privateKey == null) {
-			loadKeyPair();
+			loadKeyPair(null);
 		}
 		return JwtUtils.privateKey;
 	}
 
 	private PublicKey getPublicKey() {
 		if (JwtUtils.publicKey == null) {
-			loadKeyPair();
+			loadKeyPair(null);
 		}
 		return JwtUtils.publicKey;
 	}

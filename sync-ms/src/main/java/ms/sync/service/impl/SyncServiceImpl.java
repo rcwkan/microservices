@@ -21,8 +21,7 @@ public class SyncServiceImpl implements SyncService {
 	SyncLogRepository syncLogRepository;
 	
 	
-	@Override
-	@Transactional
+	@Override 
 	public SyncLog createSyncLog(SyncLog syncLog) {
 		
 		log.infov("createSyncLog : "+ syncLog.username);
