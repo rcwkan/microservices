@@ -1,23 +1,23 @@
 package ms.user.service.impl;
 
 import java.io.File;
-import java.time.Instant;
-import java.util.Optional;
+import java.net.URISyntaxException;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
+import org.reflections.util.ClasspathHelper;
 
 import app.core.jwt.JwtUtils;
 import app.core.util.CoreUtils;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
-
+import jakarta.inject.Named;
 import ms.user.dynamo.UserRepository;
 import ms.user.dynamo.model.User;
 import ms.user.service.AuthService;
 
+@Named("authService")
 @ApplicationScoped
 public class AuthServiceImpl implements AuthService {
 
@@ -41,14 +41,12 @@ public class AuthServiceImpl implements AuthService {
 	JwtUtils jwtUtils;
 
 	@PostConstruct
-	public void init() {
+	public void init() throws URISyntaxException {
 
-		// log.info("@PostConstruct: keystore: " + keystore);
-		// jwtUtils = JwtUtils.getInstance(keystore, keyAlias, keypass);
-
-		// log.info("loadKeyPair: keystore: " + keystore);
-		File f = new File(AuthServiceImpl.class.getClassLoader().getResource(keystore).getFile());
-//	log.info("loadKeyPair: keystore uri: " + f.isFile() + "," + f.exists());
+		log.info("loadKeyPair: keystore: " + keystore);
+		log.info("loadKeyPair: keystore: " 	+ ClasspathHelper.contextClassLoader().getResource(keystore).toURI().toString());
+		File f = new File(ClasspathHelper.contextClassLoader().getResource(keystore).getFile());
+ 
 
 		jwtUtils = JwtUtils.getInstance(f, keyAlias, keypass);
 	}
@@ -73,16 +71,6 @@ public class AuthServiceImpl implements AuthService {
 		}
 		throw new Exception("Login Failed.");
 
-	}
-
-	public String register(String username, String email, String displayName, String password) {
-		User newUser = new User(username, email, displayName);
-		newUser.setCreateDate(Instant.now());
-		newUser.setPwdHash(CoreUtils.hashPwd(newUser.getUserId(), password));
-
-		userRepository.save(newUser);
-
-		return newUser.getUserId();
 	}
 
 }

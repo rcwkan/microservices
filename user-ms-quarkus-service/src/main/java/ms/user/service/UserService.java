@@ -6,6 +6,9 @@ import ms.user.dynamo.model.User;
  
 
 public interface UserService {
+	
+	
+	User register(String username, String email, String displayName, String password)  throws Exception;
 
 	List<User> findUser(String username);
 

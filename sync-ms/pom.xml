@@ -70,9 +70,14 @@
 
 		<dependency>
 			<groupId>io.quarkus</groupId>
-			<artifactId>quarkus-amazon-lambda</artifactId>
-
+			<artifactId>quarkus-amazon-lambda-rest</artifactId>
 		</dependency>
+
+		<!--
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-amazon-lambda</artifactId> 
+		</dependency>-->
 		<dependency>
 			<groupId>io.quarkus</groupId>
 			<artifactId>quarkus-arc</artifactId>
