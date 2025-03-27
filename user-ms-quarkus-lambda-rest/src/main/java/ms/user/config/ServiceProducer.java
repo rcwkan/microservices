@@ -7,17 +7,17 @@ import ms.user.service.impl.UserServiceImpl;
 
 //@Singleton
 public class ServiceProducer {
-
-//	@Produces
-//	@ApplicationScoped
+/*
+	@Produces
+	@ApplicationScoped
 	public UserService userService() {
 		return new UserServiceImpl();
 	}
 
-//	@Produces
-//	@ApplicationScoped
+	@Produces
+	@ApplicationScoped
 	public AuthService authService() {
 		return new AuthServiceImpl();
 	}
-
+*/
 }

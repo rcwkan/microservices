@@ -1,0 +1,45 @@
+<server description="Sample Liberty server">
+
+	<featureManager>
+		<platform>jakartaee-10.0</platform>
+		<platform>microprofile-7.0</platform>
+		<feature>restfulWS</feature>
+		<feature>jsonb</feature>
+		<feature>jsonp</feature>
+		<feature>cdi</feature>
+		<feature>mpConfig</feature>
+		<feature>mpRestClient</feature>
+		<feature>appSecurity</feature>
+		<!-- <feature>servlet</feature> -->
+		<feature>mpJwt</feature>
+		<feature>persistence</feature>
+		<feature>mpRestClient</feature>
+		<feature>mpOpenAPI</feature> 
+	</featureManager>
+
+	<variable name="http.port" defaultValue="8080" />
+	<variable name="https.port" defaultValue="8443" />
+
+
+	<keyStore id="defaultKeyStore" password="password" />
+
+	<httpEndpoint host="*" httpPort="${http.port}" httpsPort="${https.port}" id="defaultHttpEndpoint" />
+
+	<webApplication location="user-ms-openliberty.war" contextRoot="/" />
+
+
+	<logging consoleLogLevel="INFO" messageSource="message,trace,accessLog,ffdc,audit" />
+
+
+<!-- enable when using RDBMS e.g. PostgreSQL -->
+<!-- 
+	<library id="jdbcLib">
+		<fileset dir="jdbc" includes="*.jar" />
+	</library>
+
+	<dataSource jndiName="jdbc/userDB">
+		<jdbcDriver libraryRef="jdbcLib" />
+		<properties.postgresql serverName="localhost" portNumber="5432" databaseName="userdb" user="app" password="P@ss1234" />
+	</dataSource>
+ -->
+</server>
