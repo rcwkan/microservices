@@ -1,6 +1,7 @@
 package ms.user.service.impl;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 
 import org.jboss.logging.Logger;
@@ -41,7 +42,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> findUser(String username) {
 		// TODO Auto-generated method stub
-		return null;
+		return Collections.EMPTY_LIST;
 	}
 
 	@Override

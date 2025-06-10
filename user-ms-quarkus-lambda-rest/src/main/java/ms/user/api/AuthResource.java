@@ -32,15 +32,20 @@ public class AuthResource {
 	UserService userService;
 
 	@POST
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/login")
-	public Response login(@FormParam("username") String username, @FormParam("password") String password) {
+	public Response login(AuthResquest req) {
 
-		log.info("login: " + username);
+		if (req == null)
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+
+		log.info("login: " + req.getUsername());
 
 		try {
-			String jwt = authService.authenticate(username, password);
-			return Response.status(Response.Status.OK).entity(jwt).build();
+			String jwt = authService.authenticate(req.getUsername(), req.getPassword());
+			// return Response.status(Response.Status.OK).entity(new
+			// AuthResponse(jwt)).build();
+			return Response.ok(new AuthResponse(jwt)).build();
 		} catch (Exception e) {
 			e.printStackTrace();
 
@@ -50,13 +55,12 @@ public class AuthResource {
 	}
 
 	@POST
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/register")
-	public Response register(@FormParam("username") String username, @FormParam("email") String email,
-			@FormParam("displayName") String displayName, @FormParam("password") String password) {
+	public Response register(AuthResquest req) {
 
 		try {
-			userService.register(username, email, displayName, password);
+			userService.register(req.getUsername(), req.getEmail(), req.getEmail(), req.getPassword());
 			return Response.status(Response.Status.NO_CONTENT).build();
 		} catch (Exception e) {
 			e.printStackTrace();

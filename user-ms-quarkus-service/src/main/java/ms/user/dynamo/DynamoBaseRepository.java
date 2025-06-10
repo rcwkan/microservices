@@ -17,7 +17,7 @@ public abstract class DynamoBaseRepository<T, K> {
 
 	private static final Logger log = Logger.getLogger(DynamoBaseRepository.class);
 
-	@ConfigProperty(name = "dynamodb.database")
+	@ConfigProperty(name = "dynamodb.database", defaultValue="user")
 	protected String database;
 
 	@ConfigProperty(name = "dynamodb.endpoint")
@@ -26,15 +26,14 @@ public abstract class DynamoBaseRepository<T, K> {
 	@ConfigProperty(name = "dynamodb.region")
 	protected String region;
 
-	@ConfigProperty(name = "dynamodb.profile")
-	protected String profile;
-
-	@ConfigProperty(name = "dynamodb.awsaccesskey")
+	@ConfigProperty(name = "dynamodb.islocal", defaultValue="true")
+	protected boolean islocal;
+ 
+	@ConfigProperty(name = "dynamodb.awsaccesskey", defaultValue="123")
 	protected String awsaccesskey;
 
-	@ConfigProperty(name = "dynamodb.secretaccess")
+	@ConfigProperty(name = "dynamodb.secretaccess", defaultValue="123")
 	protected String secretaccess;
- 
 
 	protected DynamoDbEnhancedClient enhancedClient;
 
@@ -46,25 +45,36 @@ public abstract class DynamoBaseRepository<T, K> {
 	}
 
 	protected DynamoDbEnhancedClient getClient() {
-		
-		log.info("getClient database :"+ database);
+
+		log.info("getClient database :" + database);
 
 		if (enhancedClient != null)
 			return enhancedClient;
-		
-		
+
 		Properties props = System.getProperties();
 		props.setProperty("aws.accessKeyId", awsaccesskey);
 		props.setProperty("aws.secretAccessKey", secretaccess);
- 
+
 		Region awsRegion = Region.of(region);
-	 
-		final DynamoDbClient client = DynamoDbClient.builder().credentialsProvider(SystemPropertyCredentialsProvider.create())
-				.endpointOverride(URI.create(endpoint)).region(awsRegion).build();
-		 
-		enhancedClient = DynamoDbEnhancedClient.builder().dynamoDbClient(client).build();
-		 
-		return enhancedClient;
+
+		if (islocal) {
+			final DynamoDbClient client = DynamoDbClient.builder()
+					.credentialsProvider(SystemPropertyCredentialsProvider.create())
+					.endpointOverride(URI.create(endpoint)).region(awsRegion).build();
+
+			enhancedClient = DynamoDbEnhancedClient.builder().dynamoDbClient(client).build();
+
+			return enhancedClient;
+
+		} else {
+			final DynamoDbClient client = DynamoDbClient.builder()
+					.credentialsProvider(SystemPropertyCredentialsProvider.create()).region(awsRegion).build();
+
+			enhancedClient = DynamoDbEnhancedClient.builder().dynamoDbClient(client).build();
+
+			return enhancedClient;
+		}
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -72,5 +82,5 @@ public abstract class DynamoBaseRepository<T, K> {
 
 		return getClient().table(database, TableSchema.fromBean(clazz));
 	}
- 
+
 }
