@@ -32,7 +32,7 @@ public class JwtUtils {
 
 	private String privateKeyPath;
 
-	private static String privateKeyClasspath = "key.p12";
+	private static String privateKeyClasspath = "private.pem";
 
 	private Long expiration = 3000l;
 
@@ -53,10 +53,14 @@ public class JwtUtils {
 	}
 
 	public static JwtUtils getInstance(File privateKeyFile, String alias, String pass) {
+		
+		keyPass = pass;
+		keyAlias = alias;
 
 		if (instance == null) {
 			instance = new JwtUtils();
 		}
+	
 		instance.loadKeyPair(privateKeyFile);
 		return instance;
 	}
@@ -162,6 +166,8 @@ public class JwtUtils {
 
 			KeyStore keystore = KeyStore.getInstance(keyAlgo);
 			char[] password = new String(keyPass).toCharArray();
+			
+		
 			keystore.load(new FileInputStream(filePrivateKey), password);
 			JwtUtils.privateKey = (PrivateKey) keystore.getKey(keyAlias, password);
 

@@ -2,6 +2,7 @@ package ms.user.api;
 
 import org.jboss.logging.Logger;
 
+import jakarta.annotation.security.PermitAll;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -11,6 +12,8 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import ms.user.api.model.AuthResponse;
+import ms.user.api.model.AuthResquest;
 import ms.user.service.AuthService;
 import ms.user.service.UserService;
 
@@ -19,10 +22,7 @@ import ms.user.service.UserService;
 public class AuthResource {
 
 	private static final Logger log = Logger.getLogger(AuthResource.class);
-
-//	@Inject
-//	JsonWebToken jwt;
-
+ 
 	@Inject
 	@Named("authService")
 	AuthService authService;
@@ -33,6 +33,7 @@ public class AuthResource {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
+	@PermitAll
 	@Path("/login")
 	public Response login(AuthResquest req) {
 
@@ -43,8 +44,7 @@ public class AuthResource {
 
 		try {
 			String jwt = authService.authenticate(req.getUsername(), req.getPassword());
-			// return Response.status(Response.Status.OK).entity(new
-			// AuthResponse(jwt)).build();
+ 
 			return Response.ok(new AuthResponse(jwt)).build();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -56,6 +56,7 @@ public class AuthResource {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
+	@PermitAll
 	@Path("/register")
 	public Response register(AuthResquest req) {
 

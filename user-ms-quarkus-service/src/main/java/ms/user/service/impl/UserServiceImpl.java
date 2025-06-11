@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User register(String username, String email, String displayName, String password) throws Exception {
 
-		if (!findUser(username).isEmpty()) {
+		if (findUser(username) !=null ) {
 			throw new Exception("User already exists");
 		}
 
@@ -41,7 +41,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<User> findUser(String username) {
-		// TODO Auto-generated method stub
+		
+		  
+		
 		return Collections.EMPTY_LIST;
 	}
 
@@ -53,8 +55,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User readUser(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		 
+		return 	userRepository.findById(id);
 	}
 
 	@Override

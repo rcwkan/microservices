@@ -3,6 +3,7 @@ package ms.user.dynamo.model;
 import java.time.Instant;
 import java.util.UUID;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
@@ -20,6 +21,7 @@ public class User {
  
 	private Boolean isActive;
  
+	@JsonbTransient 
 	private String pwdHash;
  
 	private Instant createDate;

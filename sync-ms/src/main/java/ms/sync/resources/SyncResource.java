@@ -3,6 +3,8 @@ package ms.sync.resources;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 
+import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -20,7 +22,7 @@ import ms.sync.model.FileResource;
 import ms.sync.service.SyncService;
 
 @Path("/sync")
-@RequestScoped
+@Authenticated 
 public class SyncResource {
 
 	private static final Logger log = Logger.getLogger(SyncResource.class);
@@ -33,8 +35,10 @@ public class SyncResource {
  
 	@POST
 	@Produces(MediaType.TEXT_PLAIN)
-	@RolesAllowed({ "user" })
+	 
+	//@RolesAllowed({ "user" })
 	public long sync(@Context SecurityContext ctx) {
+		log.info("sync:" +jwt.getSubject() );
 		
 		SyncLog syncLog = new SyncLog(ctx.getUserPrincipal().getName());
 		syncService.createSyncLog(syncLog);
@@ -44,7 +48,7 @@ public class SyncResource {
  
 	@POST
 	@Path("/file")
-	@RolesAllowed({ "user" })
+//	@RolesAllowed({ "user" })
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public boolean fileUpload(  FileResource upload) {
 	    log.info("fileUpload   File path: "+ upload.file.getAbsolutePath() + " name:" + upload.fileName + "," + upload.id);
@@ -53,9 +57,9 @@ public class SyncResource {
 	}
 
 	@GET
-	@Produces(MediaType.TEXT_PLAIN)
-	@RolesAllowed({ "admin" })
-	//@PermitAll
+	@Produces(MediaType.TEXT_PLAIN) 
+	//@RolesAllowed({ "admin" })
+//	@PermitAll
 	public String check(@Context SecurityContext ctx) {
 		return getResponseString(ctx);
 	}

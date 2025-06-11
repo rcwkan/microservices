@@ -31,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
 	private String keystore;
 
 	@Inject
-	@ConfigProperty(name = "ms.core.key.pass", defaultValue = "")
+	@ConfigProperty(name = "ms.core.key.pass", defaultValue = "password")
 	private String keypass;
 
 	@Inject

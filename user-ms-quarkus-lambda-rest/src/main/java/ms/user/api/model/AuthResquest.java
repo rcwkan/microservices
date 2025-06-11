@@ -1,4 +1,4 @@
-package ms.user.api;
+package ms.user.api.model;
 
 public class AuthResquest {
 

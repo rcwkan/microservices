@@ -64,17 +64,8 @@ public class AuthServiceImpl implements AuthService {
 			throw new Exception("User not found. username:" + username);
 		}
 
-		User user = users.get(0);
-//		List<UserCred> creds = users.get(0).getCreds().stream().filter(c -> c.isActive()).collect(Collectors.toList());
-
-//		if (creds.isEmpty() || creds.size() != 1) {
-//			throw new Exception("Password expired.");
-//		}
-//
-//		if (creds.get(0).getPwdHash().equals(CoreUtils.hashString(pwd))) {
-//			return jwtUtils.generateToken(username);
-//		}
-
+		User user = users.get(0); 
+		
 		if (user.getPwdHash().equals(CoreUtils.hashPwd(user.getUserId(), pwd)))
 			return jwtUtils.generateToken(user.getUsername());
 
