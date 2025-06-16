@@ -3,8 +3,7 @@
 ## Background
 
 Evaluate JAVA application frameworks: SpringBoot, Quarkus and Openliberty.
-
-Notes: I've worked with Spring frameworks since v2
+ 
 
 
 
