@@ -8,8 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+//import org.springframework.transaction.annotation.Propagation;
+//import org.springframework.transaction.annotation.Transactional;
 
 import ms.notification.adaptor.EmailAdaptor;
 import ms.notification.dynamo.repository.MessageRepository;
@@ -36,11 +36,11 @@ public class MessageServiceImpl implements MessageService {
 	// @Autowired
 	// MessageRepository messageRepository;
 
-	@Autowired
+	//@Autowired
 	MessageRepository messageRepository;
 
 	@Override
-	@Transactional
+	//@Transactional
 	public Message notify(String username, String message) throws Exception {
 
 		// validation
@@ -68,7 +68,7 @@ public class MessageServiceImpl implements MessageService {
 	}
 
 	@Override
-	@Transactional
+	//@Transactional
 	public Message sendMessage(Message email) throws Exception {
 
 		// validation
@@ -91,7 +91,7 @@ public class MessageServiceImpl implements MessageService {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	//@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public Message sendEmail(Message m) throws Exception {
 
 //		try {
@@ -118,7 +118,7 @@ public class MessageServiceImpl implements MessageService {
 	}
 
 	@Override
-	@Transactional(readOnly = true)
+	//@Transactional(readOnly = true)
 	public List<Message> findRetryMessages() {
 		return messageRepository.findByStatus(MSG_STATUS_RETRY);
 	}

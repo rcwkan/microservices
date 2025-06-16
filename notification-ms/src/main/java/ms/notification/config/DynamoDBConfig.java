@@ -1,21 +1,15 @@
 package ms.notification.config;
 
 
-import org.socialsignin.spring.data.dynamodb.repository.config.EnableDynamoDBRepositories;
+//import org.socialsignin.spring.data.dynamodb.repository.config.EnableDynamoDBRepositories;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
  
  
 @Configuration
-@EnableDynamoDBRepositories(basePackages = "ms.notification.dynamo.repository")
+//@EnableDynamoDBRepositories(basePackages = "ms.notification.dynamo.repository")
 public class DynamoDBConfig {
 
 	@Value("${amazon.dynamodb.endpoint}")
@@ -30,7 +24,7 @@ public class DynamoDBConfig {
 
 	@Value("${amazon.aws.secretkey}")
 	private String amazonAWSSecretKey;
-
+/*
 	@Bean
 	public AmazonDynamoDB amazonDynamoDB() {
 		
@@ -46,4 +40,5 @@ public class DynamoDBConfig {
 	public AWSCredentials amazonAWSCredentials() {
 		return new BasicAWSCredentials(amazonAWSAccessKey, amazonAWSSecretKey);
 	}
+*/
 }

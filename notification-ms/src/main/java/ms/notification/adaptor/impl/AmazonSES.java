@@ -5,9 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.regions.Regions;
+ 
 //import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 //import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
 //import com.amazonaws.services.simpleemail.model.Body;
@@ -25,7 +23,7 @@ public class AmazonSES implements EmailAdaptor {
 
 	private static final Logger log = LoggerFactory.getLogger(AmazonSES.class);
 
-	AWSCredentialsProvider credentialsProvider;
+	//AWSCredentialsProvider credentialsProvider;
 
 	@Value("${ms.core.aws.secret.key}")
 	String awsSecretKey;
@@ -35,7 +33,7 @@ public class AmazonSES implements EmailAdaptor {
 
 	@PostConstruct
 	public void init() {
-
+/*
 		credentialsProvider = new AWSCredentialsProvider() {
 			@Override
 			public void refresh() {
@@ -56,6 +54,7 @@ public class AmazonSES implements EmailAdaptor {
 				};
 			}
 		};
+		*/
 	}
 
 //	@CircuitBreaker(name = "externalEmailService", fallbackMethod = "sendFallback")

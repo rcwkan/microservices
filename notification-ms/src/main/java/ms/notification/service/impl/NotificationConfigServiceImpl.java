@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+//import org.springframework.transaction.annotation.Transactional;
 
 import ms.notification.model.NotificationConfig;
 import ms.notification.repository.NotificationConfigRepository;
@@ -22,7 +22,7 @@ public class NotificationConfigServiceImpl implements NotificationConfigService 
 	@Autowired
 	NotificationConfigRepository notificationConfigRepository;
 
-	@Transactional//(readOnly = true)
+	//@Transactional//(readOnly = true)
 	public NotificationConfig getNotificationConfig(String username) {
 
 		Optional<NotificationConfig> oConfig = notificationConfigRepository.findById(username);

@@ -11,7 +11,7 @@ import io.quarkus.security.identity.SecurityIdentity;
 import io.quarkus.security.runtime.QuarkusPrincipal;
 import io.quarkus.security.runtime.QuarkusSecurityIdentity;
 
-@ApplicationScoped
+//@ApplicationScoped
 public class AwsSecurityProvider implements LambdaIdentityProvider {
 
 	private static final Logger log = Logger.getLogger(AwsSecurityProvider.class);

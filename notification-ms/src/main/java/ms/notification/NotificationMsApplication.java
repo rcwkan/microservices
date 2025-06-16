@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 
 @SpringBootApplication
 //@EnableScheduling
-//@OpenAPIDefinition
+@OpenAPIDefinition
 public class NotificationMsApplication {
 
 	public static void main(String[] args) {

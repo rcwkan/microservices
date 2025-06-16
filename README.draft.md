@@ -33,7 +33,7 @@ Notes: I've worked with Spring frameworks since v2
 | Third partiy Library Integration| Configuration using maven, xml and annotation (@Bean) | Configuration using maven and annotation (@Produces)|  Configuration in server.xml and annotation (@Produces)|
 |  Documentation |    |    |    |
 |  Community  | Large and Very active   | Medium, very active and growing  |  Small and look like a enterprise framework  |
- 
+|  Google Search AI summarization  |    |    |   |
 
 
  
@@ -56,9 +56,10 @@ Notes: I've worked with Spring frameworks since v2
 
 
 #### What I don't like:
- 
+- Local AWS Lambda container using x86 architecture
 
- 
+
+
 #### Openliberty
 #### What I like:
 - Devlopment mode supports hot reload 
@@ -70,7 +71,42 @@ Notes: I've worked with Spring frameworks since v2
 - Configuration file is a bit confusing e.g. microprofile-config.properties, bootstrap.properties, persistence.xml, server.xml. And files may be in different location.
 
 
-## Use Case : Local development with AWS DynamoDB & Lambda
+## Use Case : Local development with AWS DynamoDB
+
+## Use Case : Getting Start and Features
+|  |  SpringBoot |  Quarkus |  Openliberty |
+| ------------ | ------------ | ------------ | ------------ |
+| AWS Integration DynamoDB |  |     |     |
+| AWS Integration Lambda | AWS Library Support   |  Quarkus Nativey support |  No Related Documentation found  | 
+| AWS Integration Lambda Deployment| Container  |   Both zip and container |  No Related Documentation found  |
+
+
+ 
+### SpringBoot  
+#### What I like:
+- AWS provides Libraries for Integration
+ 
+#### What I don't like:
+- Upgrade AWS library may found a bit difficult if used thrid partiy (non spring) lib
+ 
+
+
+### Quarkus
+#### What I like: 
+- Natively support AWS Lambda development and deployment
+
+#### What I don't like:
+- Local AWS Lambda container default using x86 architecture (That's why I need set up Ubuntu(x86) to test)
+
+
+
+
+#### Openliberty
+#### What I like:
+- Support Eclipse JNoSQL which is very easy to integrate and can use DynamoDB as both Key-Value and Document DB
+ 
+#### What I don't like:
+- Not offically support Lambda 
  
 
 

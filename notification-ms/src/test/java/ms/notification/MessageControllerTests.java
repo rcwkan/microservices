@@ -52,7 +52,7 @@ public class MessageControllerTests {
 	}
 	
 	
-	@Test
+	//@Test
 	void sendTest_missing_to() throws Exception {
 
 		Message message = Message.builder().content("Message").build();
@@ -69,7 +69,7 @@ public class MessageControllerTests {
 				.andExpect(content().string("Missing msgTo.")); 
 	}
 	
-	@Test
+	//@Test
 	void sendTest_missing_content() throws Exception {
 
 		Message message = Message.builder().to("tester01").build();

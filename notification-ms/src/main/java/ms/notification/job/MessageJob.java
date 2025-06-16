@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+//import org.springframework.transaction.annotation.Transactional;
 
 import ms.notification.dynamo.repository.model.Message;
 import ms.notification.model.Message2;
@@ -26,7 +26,7 @@ public class MessageJob {
 	
 
 	@Scheduled(fixedRate = 5, timeUnit = TimeUnit.MINUTES)
-	@Transactional
+	//@Transactional
 	public void scheduleSendRetryMessages() {
 		
 		log.info("scheduleSendRetryMessages ");

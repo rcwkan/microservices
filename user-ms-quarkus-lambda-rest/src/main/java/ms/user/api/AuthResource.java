@@ -33,7 +33,6 @@ public class AuthResource {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	@PermitAll
 	@Path("/login")
 	public Response login(AuthResquest req) {
 
@@ -56,7 +55,6 @@ public class AuthResource {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	@PermitAll
 	@Path("/register")
 	public Response register(AuthResquest req) {
 
