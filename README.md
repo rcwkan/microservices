@@ -43,7 +43,7 @@ Evaluate JAVA application frameworks: SpringBoot, Quarkus and Openliberty.
 
 
 #### What I don't like:
-- The way to restart the app while development
+-
 
 
 ### Quarkus

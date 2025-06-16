@@ -12,11 +12,9 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import app.core.jwt.JwtUtils;
 import app.core.jwt.JwtVerifyUtils;
 import ms.notification.jwt.JwtAuthenticationProvider;
-
  
-
 @Configuration
-@ComponentScan(basePackages = "ms.notification")
+@ComponentScan({"ms.notification"})
 public class ApplicationConfiguration {
 
 	private static final Logger log = LoggerFactory.getLogger(ApplicationConfiguration.class);

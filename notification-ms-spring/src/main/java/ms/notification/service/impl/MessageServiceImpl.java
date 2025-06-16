@@ -36,7 +36,7 @@ public class MessageServiceImpl implements MessageService {
 	// @Autowired
 	// MessageRepository messageRepository;
 
-	//@Autowired
+	@Autowired
 	MessageRepository messageRepository;
 
 	@Override
@@ -59,9 +59,10 @@ public class MessageServiceImpl implements MessageService {
 //				.createDate(new Date()).build();
 //		messageRepository.save(msg);
 
-		Message email = Message.builder().entityType(Message.TYPE_EMAIL).to(username).content(message).status(MSG_STATUS_PENDING).createDate(new Date())
-				.build();
-		messageRepository.save(email);
+		Message email = new Message();
+		//Message email = Message.builder().entityType(Message.TYPE_EMAIL).to(username).content(message).status(MSG_STATUS_PENDING).createDate(new Date())
+		//		.build();
+		//messageRepository.save(email);
 
 		return sendEmail(email);
 

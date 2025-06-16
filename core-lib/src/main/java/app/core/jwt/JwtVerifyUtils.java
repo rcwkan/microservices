@@ -3,6 +3,8 @@ package app.core.jwt;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
@@ -22,13 +24,12 @@ import io.jsonwebtoken.security.SecurityException;
 public class JwtVerifyUtils {
 
 	private static final Logger log = LoggerFactory.getLogger(JwtVerifyUtils.class);
- 
 
 	private static PublicKey publicKey;
 
 	private String publicKeyPath;
 
-	private String publicKeyClasspath = "key.der";
+	private String publicKeyClasspath = "public.der";
 
 	private String keyAlgo = "RSA";
 
@@ -36,7 +37,7 @@ public class JwtVerifyUtils {
 		try {
 			Jwts.parser().verifyWith(this.getPublicKey()).build().parse(jwt);
 			return true;
-		} catch (ExpiredJwtException   | MalformedJwtException |SecurityException |  IllegalArgumentException e) {
+		} catch (ExpiredJwtException | MalformedJwtException | SecurityException | IllegalArgumentException e) {
 			log.info(e.getMessage(), e);
 		}
 		return false;
@@ -50,6 +51,7 @@ public class JwtVerifyUtils {
 		return claims.getPayload();
 
 	}
+ 
 
 	PublicKey getPublicKey() {
 

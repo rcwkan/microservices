@@ -19,7 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import ms.notification.dynamo.repository.model.Message;
 import ms.notification.model.JwtUserDetails;
 import ms.notification.service.MessageService;
-import ms.user.client.api.DefaultApi;
+//import ms.user.client.api.DefaultApi;
 
 @RestController
 @RequestMapping("message")
@@ -27,8 +27,8 @@ public class MessageController {
 
 	private static final Logger log = LoggerFactory.getLogger(MessageController.class);
 
-	@Autowired
-	DefaultApi userApi;
+	//@Autowired
+	//DefaultApi userApi;
 
 	@Autowired
 	MessageService messageService;
@@ -49,14 +49,14 @@ public class MessageController {
 
 		try {
 			
-//			JwtUserDetails jUSer = (JwtUserDetails) SecurityContextHolder.getContext().getAuthentication()
-//					.getPrincipal();
-//			userApi.getApiClient().addDefaultHeader("Authorization", "Bearer " + jUSer.getJwt());
-//
-//			log.info("sendMesssage jUSer.getJwt() {}", jUSer.getJwt());
-//			Object obj = userApi.usersMeGet();
-//
-//			log.info("userApi.usersMeGet():" + obj);
+			JwtUserDetails jUSer = (JwtUserDetails) SecurityContextHolder.getContext().getAuthentication()
+					.getPrincipal();
+			//userApi.getApiClient().addDefaultHeader("Authorization", "Bearer " + jUSer.getJwt());
+
+			log.info("sendMesssage jUSer.getJwt() {}", jUSer.getJwt());
+			//Object obj = userApi.usersMeGet();
+
+			//log.info("userApi.usersMeGet():" + obj);
 			
 
 			Message sMessage = messageService.sendMessage(message);
@@ -82,11 +82,12 @@ public class MessageController {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = String.class)) }),
 			@ApiResponse(responseCode = "400", description = "Invalid input provided") })
 	@PostMapping("/notify")
-	public ResponseEntity<String> notify(@RequestParam String username, @RequestParam String content) {
-
+	public ResponseEntity<String> notify(@RequestBody Message message) {
+		log.info("notify: {}", message.getContent());
+		
 		boolean success;
 		try {
-			Message sMessage = messageService.notify(username, content);
+			Message sMessage = messageService.notify(message.getTo(), message.getContent());
 
 			success = "S".equals(sMessage.getStatus());
 
