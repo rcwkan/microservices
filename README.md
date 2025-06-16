@@ -22,7 +22,6 @@ Evaluate JAVA application frameworks: SpringBoot, Quarkus and Openliberty.
 | ------------ | ------------ | ------------ | ------------ | 
 | Getting Start Tutorials|   Easy  |   Easy  |    Very Easy (if run in provied Lab)|
 | Configuration|   Easy to use | $${\color{blue}Robust}$$ |  A bit confusing |
-|  REST API | Very Easy  | Very Easy  |  Very Easy |
 |  JTA | $${\color{blue}More than JEE (e.g. readonly)}$$  | JEE Standard |  JEE Standard|
 |  JPA |  JPA, Hibernate and Mybatis  |   JPA, Hibernate and Mybatis  |  JPA and Hibernate  |
 |  Security | Very fine grant and complex control with AuthenticationManager and SecurityFilterChain   |  Easy to configure |  Easy to configure  |
