@@ -61,7 +61,7 @@ Evaluate JAVA application frameworks: SpringBoot, Quarkus and Openliberty.
 #### Openliberty
 #### What I like:
 - Devlopment mode supports hot reload 
-- Guides with online lib environment provided. 
+- Guides with online Lab environment provided. 
 
 #### What I don't like:
 - Flexiablility
