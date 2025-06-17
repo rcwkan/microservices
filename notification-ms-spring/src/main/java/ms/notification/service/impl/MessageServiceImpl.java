@@ -1,5 +1,6 @@
 package ms.notification.service.impl;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -83,7 +84,7 @@ public class MessageServiceImpl implements MessageService {
 		
 		email.setEntityType(Message.TYPE_EMAIL);
 		email.setStatus(MSG_STATUS_PENDING);
-		email.setCreateDate(new Date());
+		email.setCreateDate(LocalDate.now());
 
 		messageRepository.save(email);
 

@@ -1,93 +1,53 @@
 package ms.notification.dynamo.repository;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.socialsignin.spring.data.dynamodb.repository.EnableScan;
-import org.springframework.data.repository.CrudRepository;
+ 
 import org.springframework.stereotype.Repository;
 
 import io.awspring.cloud.dynamodb.DynamoDbTemplate;
 import ms.notification.dynamo.repository.model.Message;
- 
+import software.amazon.awssdk.enhanced.dynamodb.Expression;
+import software.amazon.awssdk.enhanced.dynamodb.Key;
+import software.amazon.awssdk.enhanced.dynamodb.model.PageIterable;
+import software.amazon.awssdk.enhanced.dynamodb.model.ScanEnhancedRequest;
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
+
 @Repository
-public class MessageRepository implements  CrudRepository<Message, UUID> {
+public class MessageRepository {
 
 	@Autowired
 	DynamoDbTemplate dynamoDbTemplate;
 	
-	@Override
-	public <S extends Message> S save(S entity) {
-		// TODO Auto-generated method stub
-		return null;
+	public Message save(Message msg) {
+	
+		msg.setId(UUID.randomUUID());
+		dynamoDbTemplate.save(msg);
+		return  msg;
 	}
 
-	@Override
-	public <S extends Message> Iterable<S> saveAll(Iterable<S> entities) {
-		// TODO Auto-generated method stub
-		return null;
+	public Message findById(String id) {
+		Key key = Key.builder().partitionValue(id).build();
+		return dynamoDbTemplate.load(key, Message.class);
 	}
 
-	@Override
-	public Optional<Message> findById(UUID id) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
-	}
+	public List<Message> findByStatus(String status) {
 
-	@Override
-	public boolean existsById(UUID id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+		Map<String, AttributeValue> expressionValues = new HashMap<>();
+		expressionValues.put(":val1", AttributeValue.fromS(status));
 
-	@Override
-	public Iterable<Message> findAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		Expression filterExpression = Expression.builder().expression("status = :val1")
+				.expressionValues(expressionValues).build();
 
-	@Override
-	public Iterable<Message> findAllById(Iterable<UUID> ids) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public long count() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void deleteById(UUID id) {
-		// TODO Auto-generated method stub
+		ScanEnhancedRequest scanEnhancedRequest = ScanEnhancedRequest.builder().filterExpression(filterExpression)
+				.build();
+		PageIterable<Message> returnedList = dynamoDbTemplate.scan(scanEnhancedRequest, Message.class);
 		
-	}
-
-	@Override
-	public void delete(Message entity) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void deleteAllById(Iterable<? extends UUID> ids) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void deleteAll(Iterable<? extends Message> entities) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void deleteAll() {
-		// TODO Auto-generated method stub
-		
+		return returnedList.items().stream().toList();
 	}
 
 }
