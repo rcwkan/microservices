@@ -60,10 +60,10 @@ public class MessageServiceImpl implements MessageService {
 //				.createDate(new Date()).build();
 //		messageRepository.save(msg);
 
-		Message email = new Message();
+		Message email = Message.builder().to(username).content(message).entityType(Message.TYPE_EMAIL).status(MSG_STATUS_PENDING).build();
 		//Message email = Message.builder().entityType(Message.TYPE_EMAIL).to(username).content(message).status(MSG_STATUS_PENDING).createDate(new Date())
 		//		.build();
-		//messageRepository.save(email);
+		messageRepository.save(email);
 
 		return sendEmail(email);
 
@@ -84,7 +84,7 @@ public class MessageServiceImpl implements MessageService {
 		
 		email.setEntityType(Message.TYPE_EMAIL);
 		email.setStatus(MSG_STATUS_PENDING);
-		email.setCreateDate(LocalDate.now());
+		
 
 		messageRepository.save(email);
 

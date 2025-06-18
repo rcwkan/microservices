@@ -88,8 +88,9 @@ public class MessageServiceTest {
 
 	@Test
 	public void sendMessage_missing_username() {
-
-		Message message = Message.builder().content("Message").build();
+ 
+		Message message = new Message();// Message.builder().content("Message").build();
+		message.setContent("Message");
 
 		try {
 

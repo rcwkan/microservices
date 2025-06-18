@@ -33,10 +33,9 @@ public class ApplicationConfiguration {
 	
 	@Bean
 	public JwtVerifyUtils jwtVerifyUtils() {
-
-//		log.info("jwtUtils: {} {} {}", keystore, keypass, keyAlias);
+ 
 		JwtVerifyUtils jb = new JwtVerifyUtils();
-//		jb.init(keystore, keyAlias, keypass);
+ 
 		return jb;
 	}
 	
@@ -44,9 +43,9 @@ public class ApplicationConfiguration {
 	@Bean
 	public JwtUtils jwtUtils() {
 
-//		log.info("jwtUtils: {} {} {}", keystore, keypass, keyAlias);
+ 
 		JwtUtils jb = new JwtUtils();
-//		jb.init(keystore, keyAlias, keypass);
+ 
 		return jb;
 	}
 

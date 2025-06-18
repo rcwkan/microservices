@@ -34,12 +34,14 @@ public class JwtUserDetailsService implements UserDetailsService {
 		try {
 
 			Claims claims = jwtVerifyUtils.getClaims(jwt);
-			JwtUserDetails user = new JwtUserDetails();
-
+			//JwtUserDetails user = JwtUserDetails.builder().jwt(jwt).username(claims.getSubject()).build();
+			JwtUserDetails user = new 	JwtUserDetails(claims.getSubject(), jwt);
+			//new JwtUserDetails(); 
+			//user.setJwt(jwt);
+			//user.setUsername(claims.getSubject());
+			
 			log.info("loadUserByUsername pincipal : {}", claims.toString());
 
-			user.setJwt(jwt);
-			user.setUsername(claims.getSubject());
 
 			if (claims.get("roles") != null && claims.get("roles") instanceof List) {
 				user.setRoles((List<String>)claims.get("roles"));

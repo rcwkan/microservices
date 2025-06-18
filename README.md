@@ -43,7 +43,7 @@ Evaluate JAVA application frameworks: SpringBoot, Quarkus and Openliberty.
 
 
 #### What I don't like:
-- The way to restart the app while development (enable spring-boot-devtools auto refresh may result to unnamed module of loader org.springframework.boot.devtools.restart.classloader.RestartClassLoader)
+- The way to restart the app while development (enable spring-boot-devtools auto refresh may result to exception : unnamed module of loader org.springframework.boot.devtools.restart.classloader.RestartClassLoader e.g. io.awspring.cloud / spring-cloud-aws-starter-dynamodb )
 
 
 ### Quarkus

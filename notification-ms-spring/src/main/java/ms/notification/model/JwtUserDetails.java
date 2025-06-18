@@ -8,6 +8,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import lombok.Builder;
+
+ 
 public class JwtUserDetails implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
@@ -19,6 +22,22 @@ public class JwtUserDetails implements UserDetails {
 	private List<String> roles;
 
 	List<SimpleGrantedAuthority> authoritie;
+	
+	public JwtUserDetails( ) {
+	 
+	}
+
+	public JwtUserDetails(String username, String jwt) {
+		this.username = username;
+		this.jwt = jwt;
+		
+	}
+
+	public JwtUserDetails(String username, String jwt, List<String> roles) {
+		this.username = username;
+		this.jwt = jwt;
+		this.roles = roles;
+	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

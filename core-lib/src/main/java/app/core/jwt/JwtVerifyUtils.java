@@ -38,7 +38,7 @@ public class JwtVerifyUtils {
 			Jwts.parser().verifyWith(this.getPublicKey()).build().parse(jwt);
 			return true;
 		} catch (ExpiredJwtException | MalformedJwtException | SecurityException | IllegalArgumentException e) {
-			log.info(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 		}
 		return false;
 
@@ -79,7 +79,7 @@ public class JwtVerifyUtils {
 			return publicKey;
 
 		} catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException e) {
-			log.info(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 		}
 
 		return null;
