@@ -1,29 +1,39 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-
+Description: AWS Serverless - norification-ms
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
-  Function:
-    Timeout: 30
+  Api:
+    EndpointConfiguration: REGIONAL
 
 Resources:
-  ProfileApiFunction:
+  NotificationFunction:
     Type: AWS::Serverless::Function 
     Properties:
       CodeUri: .
       Handler: ms.notification.StreamLambdaHandler::handleRequest
-      Runtime: java17
-      AutoPublishAlias: production
+      Runtime: java21
       SnapStart:
         ApplyOn: PublishedVersions
-      Architectures:
-        - x86_64
-      MemorySize: 2048
+
+      MemorySize: 512
+      Policies: AWSLambdaBasicExecutionRole
       Environment: 
         Variables:
-          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1 
+          PARAM1: VALUE
+ 
+      Timeout: 30
       Events:
-        HelloWorld:
+        GetResource:
           Type: Api 
           Properties:
             Path: /{proxy+}
             Method: ANY
+
+Outputs:
+  NotificationFunctionApi:
+    Description: URL for application
+    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/prod'
+
+
+ 

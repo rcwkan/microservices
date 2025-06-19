@@ -18,23 +18,32 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 //@EnableDynamoDBRepositories(basePackages = "ms.notification.dynamo.repository")
 public class DynamoDBConfig {
 
-	@Value("${amazon.dynamodb.endpoint}")
+	@Value("${dynamodb.endpoint:http://localhost:8000/}")
 	private String amazonDynamoDBEndpoint;
 
-	@Value("${amazon.dynamodb.region}")
+	@Value("${dynamodb.region:ap-southeast-2}")
 	private String amazonDynamoDBRegion;
 
-	@Value("${amazon.aws.accesskey}")
+	@Value("${dynamodb.awsaccesskey:key}")
 	private String amazonAWSAccessKey;
 
-	@Value("${amazon.aws.secretkey}")
+	@Value("${dynamodb.secretaccess:key2}")
 	private String amazonAWSSecretKey;
+
+	@Value("${dynamodb.islocal:true}")
+	private boolean isLocal;
 
 	@Bean
 	public DynamoDbClient dynamoDbClient() {
-		return DynamoDbClient.builder().endpointOverride(URI.create(amazonDynamoDBEndpoint)).region(Region.of(amazonDynamoDBRegion))
-				.credentialsProvider(StaticCredentialsProvider
-						.create(AwsBasicCredentials.create(amazonAWSAccessKey, amazonAWSSecretKey)))
+		if (isLocal) {
+			return DynamoDbClient.builder().endpointOverride(URI.create(amazonDynamoDBEndpoint))
+					.region(Region.of(amazonDynamoDBRegion)).credentialsProvider(StaticCredentialsProvider
+							.create(AwsBasicCredentials.create(amazonAWSAccessKey, amazonAWSSecretKey)))
+					.build();
+		}
+
+		return DynamoDbClient.builder().region(Region.of(amazonDynamoDBRegion)).credentialsProvider(
+				StaticCredentialsProvider.create(AwsBasicCredentials.create(amazonAWSAccessKey, amazonAWSSecretKey)))
 				.build();
 	}
 
@@ -47,5 +56,5 @@ public class DynamoDBConfig {
 	public DynamoDbTemplate dynamoDbTemplate() {
 		return new DynamoDbTemplate(dynamoDbEnhancedClient());
 	}
- 
+
 }
