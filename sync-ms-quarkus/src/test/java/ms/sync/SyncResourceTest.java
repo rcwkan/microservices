@@ -10,44 +10,47 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import io.quarkus.test.InjectMock;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.common.http.TestHTTPResource;
 import io.quarkus.test.junit.QuarkusMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
+import jakarta.inject.Inject;
+import ms.sync.api.SyncResource;
 import ms.sync.dynamo.entity.SyncLog;
 import ms.sync.model.FileResource;
-import ms.sync.resources.SyncResource;
 import ms.sync.service.SyncService;
 import ms.sync.service.impl.SyncServiceImpl;
 
 @QuarkusTest
-@TestHTTPEndpoint(SyncResource.class)
+@TestHTTPEndpoint(SyncResource.class) //root path configure
 public class SyncResourceTest {
 
-	@TestHTTPResource("/sync")
-	URL syncEndpoint;
+	//@TestHTTPResource("/sync")
+	//URL syncEndpoint;
 
-	@TestHTTPResource("/sync/file")
+	@TestHTTPResource("/file")
 	URL uploadEndpoint;
+	
+	@InjectMock
+	SyncService syncService;
 
-	@BeforeEach
-	public void setup() {
-		SyncService syncService = Mockito.mock(SyncServiceImpl.class);
-		Mockito.when(syncService.createSyncLog(new SyncLog())).thenReturn(new SyncLog());
-		QuarkusMock.installMockForType(syncService, SyncService.class);
+	@BeforeEach 
+	public void setup() { 
+		Mockito.when(syncService.createSyncLog(new SyncLog())).thenReturn(new SyncLog()); 
 	}
 
-	//@Test
+	@Test
 	@TestSecurity(user = "tester01", roles = { "user" })
 	public void testSync() {
-
-//		setup();
-		given().when().post(syncEndpoint).then().statusCode(200);
+ 
+		given().when().get().then().statusCode(200);
 	}
 
 	@Test
@@ -60,7 +63,7 @@ public class SyncResourceTest {
 		
 		Path path  =Paths.get( this.getClass().getClassLoader().getResource(fr.fileName).toURI());
 		fr.file = path.toFile();
-//		System.out.println("file.getAbsolutePath():" + path.toString());
+		System.out.println("file.getAbsolutePath():" + path.toString());
 //		fr.data =  Files.readAllBytes(path);
 		
 		Map<String, Object> fromMap = new HashMap<>();

@@ -6,6 +6,7 @@ import java.util.Properties;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
+import ms.user.dynamo.model.User;
 import software.amazon.awssdk.auth.credentials.SystemPropertyCredentialsProvider;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
@@ -83,4 +84,13 @@ public abstract class DynamoBaseRepository<T, K> {
 		return getClient().table(database, TableSchema.fromBean(clazz));
 	}
 
+
+	public T load(T t) {
+		return getTable().getItem(t);
+	}
+
+	public void save(T t) {
+		getTable().putItem(t);
+	}
+	
 }

@@ -1,6 +1,7 @@
 package ms.notification.dynamo.repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,7 @@ public class MessageRepository {
 		if(msg.getId() ==null) {
 			//create
 			msg.setId(UUID.randomUUID()); 
-			msg.setCreateDate(LocalDate.now());
+			msg.setCreateDate(LocalDateTime.now());
 		}
 		dynamoDbTemplate.save(msg);
 		

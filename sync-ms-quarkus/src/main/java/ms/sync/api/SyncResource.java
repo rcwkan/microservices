@@ -1,6 +1,7 @@
-package ms.sync.resources;
+package ms.sync.api;
 
-import org.eclipse.microprofile.jwt.JsonWebToken;
+import java.util.UUID;
+
 import org.jboss.logging.Logger;
 
 import io.quarkus.security.Authenticated;
@@ -22,65 +23,60 @@ import ms.sync.model.FileResource;
 import ms.sync.service.SyncService;
 
 @Path("/sync")
-@Authenticated 
+@Authenticated
 public class SyncResource {
 
 	private static final Logger log = Logger.getLogger(SyncResource.class);
 
-	@Inject
-	JsonWebToken jwt;
+	// @Inject
+	// JsonWebToken jwt;
 
 	@Inject
 	SyncService syncService;
- 
-	@POST
+
+	@GET
 	@Produces(MediaType.TEXT_PLAIN)
+	@RolesAllowed({ "user" })
+	public String sync(@Context SecurityContext securityContext ) {
+
 	 
-	//@RolesAllowed({ "user" })
-	public long sync(@Context SecurityContext ctx) {
-		log.info("sync:" +jwt.getSubject() );
-		
-		SyncLog syncLog = new SyncLog(ctx.getUserPrincipal().getName());
+		log.info("sync: " + securityContext.getUserPrincipal().getName());
+
+		SyncLog syncLog = new SyncLog(UUID.randomUUID() ,  securityContext.getUserPrincipal().getName());
 		syncService.createSyncLog(syncLog);
-		log.infov("sync: " + ctx.getUserPrincipal().getName() ); 
-		return 0l;
+
+		return syncLog.getId().toString();
 	}
- 
+
 	@POST
 	@Path("/file")
-//	@RolesAllowed({ "user" })
+	@RolesAllowed({ "user" })
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public boolean fileUpload(  FileResource upload) {
-	    log.info("fileUpload   File path: "+ upload.file.getAbsolutePath() + " name:" + upload.fileName + "," + upload.id);
-	    
+	public boolean fileUpload(FileResource upload) {
+		log.info("fileUpload   File path: " + upload.file.getAbsolutePath() + " name:" + upload.fileName + ","
+				+ upload.id);
+
 		return true;
 	}
 
 	@GET
-	@Produces(MediaType.TEXT_PLAIN) 
-	//@RolesAllowed({ "admin" })
+	@Path("/check")
+	@Produces(MediaType.TEXT_PLAIN)
+	@RolesAllowed({ "user" })
 //	@PermitAll
 	public String check(@Context SecurityContext ctx) {
 		return getResponseString(ctx);
 	}
-	
-
 
 	private String getResponseString(SecurityContext ctx) {
 		String name;
 		if (ctx.getUserPrincipal() == null) {
 			name = "anonymous";
-		} else if (!ctx.getUserPrincipal().getName().equals(jwt.getName())) {
-			throw new InternalServerErrorException("Principal and JsonWebToken names do not match");
 		} else {
 			name = ctx.getUserPrincipal().getName();
 		}
-		return String.format("hello %s," + " isHttps: %s," + " authScheme: %s," + " hasJWT: %s", name, ctx.isSecure(),
-				ctx.getAuthenticationScheme(), hasJwt());
-	}
-
-	private boolean hasJwt() {
-		return jwt.getClaimNames() != null;
+		return String.format("hello %s," + " isHttps: %s," + " authScheme: %s,", name, ctx.isSecure(),
+				ctx.getAuthenticationScheme());
 	}
 
 }

@@ -1,6 +1,7 @@
 package ms.notification.dynamo.repository.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
@@ -39,83 +40,16 @@ public class Message {
 
 	private String status;
 
-	private LocalDate createDate;
+	private LocalDateTime createDate;
 
-	private LocalDate sentDate;
+	private LocalDateTime sentDate;
 
 	@DynamoDbPartitionKey
 	public UUID getId() {
 		return id;
 	}
 
-	public void setId(UUID id) {
-		this.id = id;
-	}
-
-	public String getEntityType() {
-		return entityType;
-	}
-
-	public void setEntityType(String entityType) {
-		this.entityType = entityType;
-	}
-
-	public String getFrom() {
-		return from;
-	}
-
-	public void setFrom(String from) {
-		this.from = from;
-	}
-
-	public String getTo() {
-		return to;
-	}
-
-	public void setTo(String to) {
-		this.to = to;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	public String getSubject() {
-		return subject;
-	}
-
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public LocalDate getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(LocalDate createDate) {
-		this.createDate = createDate;
-	}
-
-	public LocalDate getSentDate() {
-		return sentDate;
-	}
-
-	public void setSentDate(LocalDate sentDate) {
-		this.sentDate = sentDate;
-	}
-
+ 
  
  
 /*

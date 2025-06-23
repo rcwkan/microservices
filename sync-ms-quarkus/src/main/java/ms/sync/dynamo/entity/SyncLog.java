@@ -1,36 +1,61 @@
 package ms.sync.dynamo.entity;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import jakarta.json.bind.annotation.JsonbTransient;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 
 @DynamoDbBean
 public class SyncLog {
- 
-  
+
 //	@Id
+	public UUID id;
+
 	public String username;
- 
+
 	public String syncType;
 
 	public String status;
 
 	public String fileId;
-	
-	private long createDate;
-	
+
+	private LocalDateTime createDate;
 
 	public SyncLog() {
-		
+
 	}
 
-	public SyncLog(String username) {
+	public SyncLog(String uuid) {
+		this.id = UUID.fromString(uuid);
+	}
+	
+	public SyncLog(UUID id, String username) {
 		this.username = username;
+
+		this.id = id;
+	}
+
+	public SyncLog(String uuid, String username) {
+		this.username = username;
+
+		this.id = UUID.fromString(uuid);
 	}
  
-	
-	
+
 	@DynamoDbPartitionKey
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
+
+	@DynamoDbSortKey
 	public String getUsername() {
 		return username;
 	}
@@ -38,7 +63,6 @@ public class SyncLog {
 	public void setUsername(String username) {
 		this.username = username;
 	}
- 
 
 	public String getSyncType() {
 		return syncType;
@@ -55,13 +79,14 @@ public class SyncLog {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+  
+	
 
-	@DynamoDbSortKey
-	public long getCreateDate() {
+	public LocalDateTime getCreateDate() {
 		return createDate;
 	}
 
-	public void setCreateDate(long createDate) {
+	public void setCreateDate(LocalDateTime createDate) {
 		this.createDate = createDate;
 	}
 
@@ -72,7 +97,5 @@ public class SyncLog {
 	public void setFileId(String fileId) {
 		this.fileId = fileId;
 	}
-
-  
 
 }
