@@ -38,7 +38,7 @@ Evaluate JAVA application frameworks: SpringBoot, Quarkus and Openliberty.
 ### SpringBoot  
 #### What I like:
 - Integration to other librarties
-- Flexiablility 
+- Flexibility 
 - Large and active community
 
 
@@ -63,7 +63,7 @@ Evaluate JAVA application frameworks: SpringBoot, Quarkus and Openliberty.
 - Guides with online Lab environment provided. 
 
 #### What I don't like:
-- Flexiablility
+- Flexibility
 - Guides use Java EE frontend (JSF) as client. 
 - Configuration file is a bit confusing e.g. microprofile-config.properties, bootstrap.properties, persistence.xml, server.xml. And files may be in different location.
 
